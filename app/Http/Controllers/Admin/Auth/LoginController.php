@@ -65,7 +65,8 @@ class LoginController extends Controller
 
         $seopage = Seosetting::first();
         $data['seopage'] = $seopage;
-        
+        $data['is_admin'] = true;
+        $data['title_client'] = 'administrador';
 
         return view('admin.auth.login', ['url'=> 'admin/login'])->with($data);
     }

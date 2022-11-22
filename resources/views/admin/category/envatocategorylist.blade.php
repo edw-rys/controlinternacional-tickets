@@ -15,12 +15,12 @@
                                     <div class="form-group">
                                         <label class="form-label">{{trans('uhelpupdate::langconvert.admindashboard.selectcategoryenvatoapi')}} </label>
                                         <div class="custom-controls-stacked d-md-flex" >
-                                            <select multiple="multiple" class="form-control select2_envato"  name="categorys_id[]" data-placeholder="Select Category" id="categorys" >
+                                            <select multiple="multiple" class="form-control select2_envato"  name="categorys_id[]" data-placeholder="Selecciona Categoría" id="categorys" >
 
                                             </select>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="envato_enable" value="1">
+                                    {{-- <input type="hidden" name="envato_enable" value="1"> --}}
                                 </div>
                                 <div class="modal-footer">
                                     <a href="#" class="btn btn-outline-danger" data-bs-dismiss="modal">{{trans('langconvert.admindashboard.close')}}</a>

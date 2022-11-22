@@ -43,6 +43,7 @@ class LoginController extends Controller
 
         $seopage = Seosetting::first();
         $data['seopage'] = $seopage;
+        $data['title_client'] = 'Clientes';
         
         return view('user.auth.login')->with($data);
     }

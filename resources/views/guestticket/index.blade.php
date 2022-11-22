@@ -92,7 +92,7 @@
 													<label class="form-label mb-0 mt-2">{{trans('langconvert.admindashboard.ticketsubject')}} <span class="text-red">*</span></label>
 												</div>
 												<div class="col-md-9">
-													<input type="text" id="subject" class="form-control" placeholder="Subject" name="subject" value="{{ old('subject') }}" >
+													<input type="text" id="subject" class="form-control" placeholder="Asunto" name="subject" value="{{ old('subject') }}" >
 													<span id="SubjectError" class="text-danger alert-message"></span>
 												</div>
 											</div>
@@ -103,8 +103,8 @@
 													<label class="form-label mb-0 mt-2">{{trans('langconvert.admindashboard.ticketcategory')}} <span class="text-red">*</span></label>
 												</div>
 												<div class="col-md-9">
-													<select  class="form-control select2-show-search  select2"  data-placeholder="Select Category" name="category" id="category">
-														<option label="Select Category"></option>
+													<select  class="form-control select2-show-search  select2"  data-placeholder="Selecciona Categoría" name="category" id="category">
+														<option label="Seleccionar Categoría"></option>
 														@foreach ($categories as $category)
 														
 														<option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -121,7 +121,7 @@
 													<label class="form-label mb-0 mt-2">{{trans('langconvert.newwordslang.ticketsubcategory')}}</label>
 												</div>
 												<div class="col-md-9">
-													<select  class="form-control select2-show-search select2 asdf"  data-placeholder="Select SubCategory" name="subscategory" id="subscategory" >
+													<select  class="form-control select2-show-search select2 asdf"  data-placeholder="Selecciona SubCategoría" name="subscategory" id="subscategory" >
 
 													</select>
 													<span id="subsCategoryError" class="text-danger alert-message"></span>
@@ -325,42 +325,42 @@
 								$('#selectSubCategory .row')?.remove();
 							}
 							//Envato Access
-							if(data.envatosuccess.length >= 1){
-								$('#envato_id')?.empty();
-								$('#envatopurchase .row')?.remove();
-								let selectDiv = document.querySelector('#envatopurchase');
-								let Divrow = document.createElement('div');
-								Divrow.setAttribute('class','row mt-4');
-								let Divcol3 = document.createElement('div');
-								Divcol3.setAttribute('class','col-md-3');
-								let selectlabel =  document.createElement('label');
-								selectlabel.setAttribute('class','form-label mb-0 mt-2')
-								selectlabel.innerHTML = "Envato Purchase Code <span class='text-red'>*</span>";
-								let divcol9 = document.createElement('div');
-								divcol9.setAttribute('class', 'col-md-9');
-								let selecthSelectTag =  document.createElement('input');
-								selecthSelectTag.setAttribute('class','form-control');
-								selecthSelectTag.setAttribute('type','search');
-								selecthSelectTag.setAttribute('id', 'envato_id');
-								selecthSelectTag.setAttribute('name', 'envato_id');
-								selecthSelectTag.setAttribute('placeholder', 'Enter Your Purchase Code');
-								let selecthSelectInput =  document.createElement('input');
-								selecthSelectInput.setAttribute('type','hidden');
-								selecthSelectInput.setAttribute('id', 'envato_support');
-								selecthSelectInput.setAttribute('name', 'envato_support');
-								selectDiv.append(Divrow);
-								Divrow.append(Divcol3);
-								Divcol3.append(selectlabel);
-								divcol9.append(selecthSelectTag);
-								divcol9.append(selecthSelectInput);
-								Divrow.append(divcol9);
-								$('.purchasecode').attr('disabled', true);
+							// if(data.envatosuccess.length >= 1){
+							// 	$('#envato_id')?.empty();
+							// 	$('#envatopurchase .row')?.remove();
+							// 	let selectDiv = document.querySelector('#envatopurchase');
+							// 	let Divrow = document.createElement('div');
+							// 	Divrow.setAttribute('class','row mt-4');
+							// 	let Divcol3 = document.createElement('div');
+							// 	Divcol3.setAttribute('class','col-md-3');
+							// 	let selectlabel =  document.createElement('label');
+							// 	selectlabel.setAttribute('class','form-label mb-0 mt-2')
+							// 	selectlabel.innerHTML = "Envato Purchase Code <span class='text-red'>*</span>";
+							// 	let divcol9 = document.createElement('div');
+							// 	divcol9.setAttribute('class', 'col-md-9');
+							// 	let selecthSelectTag =  document.createElement('input');
+							// 	selecthSelectTag.setAttribute('class','form-control');
+							// 	selecthSelectTag.setAttribute('type','search');
+							// 	selecthSelectTag.setAttribute('id', 'envato_id');
+							// 	selecthSelectTag.setAttribute('name', 'envato_id');
+							// 	selecthSelectTag.setAttribute('placeholder', 'Enter Your Purchase Code');
+							// 	let selecthSelectInput =  document.createElement('input');
+							// 	selecthSelectInput.setAttribute('type','hidden');
+							// 	selecthSelectInput.setAttribute('id', 'envato_support');
+							// 	selecthSelectInput.setAttribute('name', 'envato_support');
+							// 	selectDiv.append(Divrow);
+							// 	Divrow.append(Divcol3);
+							// 	Divcol3.append(selectlabel);
+							// 	divcol9.append(selecthSelectTag);
+							// 	divcol9.append(selecthSelectInput);
+							// 	Divrow.append(divcol9);
+							// 	$('.purchasecode').attr('disabled', true);
 								
-							}else{
-								$('#envato_id')?.empty();
-								$('#envatopurchase .row')?.remove();
-								$('.purchasecode').removeAttr('disabled');
-							}
+							// }else{
+							// 	$('#envato_id')?.empty();
+							// 	$('#envatopurchase .row')?.remove();
+							// 	$('.purchasecode').removeAttr('disabled');
+							// }
 						},
 						error:(data)=>{
 

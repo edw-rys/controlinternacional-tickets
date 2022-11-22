@@ -49,9 +49,10 @@ class mailmailablesend extends Mailable
             $body = str_replace('{{'.$key.'}}' , $this->data[$key] , $body);
             $body = str_replace('{{ '.$key.' }}' , $this->data[$key] , $body);
         }
-
+        
         $data['emailBody']  =   $body;
         $this->subject( $subject );
+        // dd(config('mail'));
         return $this->view('admin.email.template', $data);
     }
 }

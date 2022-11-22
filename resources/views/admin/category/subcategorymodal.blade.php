@@ -30,7 +30,7 @@
                                                 <label class="form-label d-flex align-items-center me-6">{{trans('langconvert.newwordslang.parent_id')}} </label>
                                             </div>
                                             <div class="col-xl-9 col-md-12">
-                                                <select name="parent_id[]" id="parent_id" class="categorysub form-control" data-placeholder="Select Category" multiple>
+                                                <select name="parent_id[]" id="parent_id" class="categorysub form-control" data-placeholder="Selecciona Categoría" multiple>
                                                     
                                                 </select>
                                             </div>

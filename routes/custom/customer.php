@@ -41,6 +41,11 @@ Route::group(['namespace' => 'User', 'prefix' => 'customer'], function(){
         Route::post('/custsettings', 'Profile\UserprofileController@custsetting');
         Route::get('/ticket','Ticket\TicketController@create')->name('client.ticket');
         Route::post('/ticket','Ticket\TicketController@store')->name('client.ticketcreate');
+
+        Route::get('/ticket-hoses/get','Ticket\TicketController@getHosesByUser')->name('client.get-hoses');
+
+
+
         Route::post('/imageupload','Ticket\TicketController@storeMedia')->name('imageupload');
         Route::get('/ticket/view/{ticket_id}','Ticket\TicketController@show')->name('loadmore.load_data');
         Route::post('/ticket/{ticket_id}','Ticket\CommentsController@postComment')->name('client.comment');
@@ -48,9 +53,14 @@ Route::group(['namespace' => 'User', 'prefix' => 'customer'], function(){
         Route::get('/ticket/delete/{id}','Ticket\TicketController@destroy')->name('client.ticket.delete');
         Route::post('/ticket/delete/tickets', 'Ticket\TicketController@ticketmassdestroy')->name('ticket.massremove');
         Route::post('/ticket/editcomment/{id}','Ticket\CommentsController@updateedit')->name('client.comment.edit');
-        Route::get('/activeticket','Ticket\TicketController@activeticket')->name('activeticket');
-        Route::get('/closedticket','Ticket\TicketController@closedticket')->name('closedticket');
-        Route::get('/onholdticket','Ticket\TicketController@onholdticket')->name('onholdticket');
+        /**
+         * 
+         */
+        Route::get('/tickets-list/{status}','Ticket\TicketController@listTickets')->name('tickets-list');
+        // Route::get('/activeticket','Ticket\TicketController@activeticket')->name('activeticket');
+        // Route::get('/closedticket','Ticket\TicketController@closedticket')->name('closedticket');
+        // Route::get('/onholdticket','Ticket\TicketController@onholdticket')->name('onholdticket');
+
         Route::post('/closed/{ticket_id}','Ticket\TicketController@close')->name('client.ticketclose');
         Route::delete('/image/delete/{id}','Ticket\CommentsController@imagedestroy')->name('client.imagedestroy');
         Route::post('subcat','Ticket\TicketController@sublist')->name('subcat');

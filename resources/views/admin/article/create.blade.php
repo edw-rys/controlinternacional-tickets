@@ -35,7 +35,7 @@
 										<div class="card-body">
 											<div class="form-group">
 												<label class="form-label">{{trans('langconvert.admindashboard.title')}} <span class="text-red">*</span></label>
-												<input type="text" class="form-control @error('title') is-invalid @enderror" placeholder="Subject" name="title" value="{{old('title')}}" id="subject">
+												<input type="text" class="form-control @error('title') is-invalid @enderror" placeholder="Asunto" name="title" value="{{old('title')}}" id="subject">
 												<span id="TitleError" class="text-danger alert-message"></span>
 												@error('title')
 
@@ -47,8 +47,8 @@
 											</div>
 											<div class="form-group">
 												<label class="form-label">{{trans('langconvert.admindashboard.category')}} <span class="text-red">*</span></label>
-												<select class="form-control select2-show-search  select2 @error('category') is-invalid @enderror" data-placeholder="Select Category" name="category" id="category">
-													<option label="Select Category"></option>
+												<select class="form-control select2-show-search  select2 @error('category') is-invalid @enderror" data-placeholder="Selecciona Categoría" name="category" id="category">
+													<option label="Seleccionar Categoría"></option>
 													@foreach ($category as $category)
 
 														<option value="{{ $category->id }}" @if(old('category') == $category->id ) selected @endif>{{ $category->name }}</option>
@@ -66,7 +66,7 @@
 											</div>
 											<div class="form-group" id="selectssSubCategory" style="display: none;">
 													<label class="form-label mb-0 mt-2">{{trans('langconvert.newwordslang.subcategory')}}</label>
-													<select  class="form-control select2-show-search  select2"  data-placeholder="Select SubCategory" name="subscategory" id="subscategory">
+													<select  class="form-control select2-show-search  select2"  data-placeholder="Selecciona SubCategoría" name="subscategory" id="subscategory">
 													</select>
 													<span id="subsCategoryError" class="text-danger alert-message"></span>
 											</div>

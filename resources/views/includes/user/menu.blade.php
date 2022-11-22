@@ -32,10 +32,10 @@
 								</div>
 								<nav class="horizontalMenu clearfix order-lg-2 my-auto ms-auto">
 									<ul class="horizontalMenu-list custom-ul">
-										<li>
+										{{-- <li>
 											<a href="{{url('/')}}">{{trans('langconvert.menu.home')}}</a>
-										</li>
-										@if (setting('KNOWLEDGE_ENABLE') == 'yes')
+										</li> --}}
+										{{-- @if (setting('KNOWLEDGE_ENABLE') == 'yes')
 
 										<li>
 											<a href="{{url('/knowledge')}}" class="sub-icon">{{trans('langconvert.menu.knowledge')}} </a>
@@ -52,9 +52,9 @@
 										<li>
 											<a href="{{url('/contact-us')}}">{{trans('langconvert.menu.contact')}}</a>
 										</li>
-										@endif
+										@endif --}}
 
-										@foreach ($page as $pages)
+										{{-- @foreach ($page as $pages)
 										@if($pages->status == '1')
 										@if($pages->viewonpages == 'both' || $pages->viewonpages == 'header')
 
@@ -64,7 +64,7 @@
 
 										@endif
 										@endif
-										@endforeach
+										@endforeach --}}
 										
 										@if (Auth::guard('customer')->check())
 
@@ -87,7 +87,7 @@
 											</div>
 										</li> --}}
 
-										<li class="dropdown profile-dropdown">
+										<li class="dropdown profile-dropdown menu-toggle-show-hidden-display" >
 											<a href="#" class="nav-link pe-1 ps-0 py-0 mt-1 leading-none" data-bs-toggle="dropdown">
 												<span>
 													@if (Auth::guard('customer')->user()->image == null)
@@ -100,10 +100,11 @@
 
 												</span>
 											</a>
-											<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+											<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow menu-toggle-show-hidden-display">
 												<div class="p-3 text-center border-bottom">
 													<a href="#" class="text-center user pb-0 font-weight-bold">{{Auth::guard('customer')->user()->username}}</a>
 													<p class="text-center user-semi-title">{{Auth::guard('customer')->user()->email}}</p>
+													<p class="text-center user-semi-title">{{Auth::guard('customer')->user()->station_name}}</p>
 												</div>
 
 												<a class="dropdown-item d-flex" href="{{route('client.dashboard')}}">
@@ -114,7 +115,7 @@
 													<i class="feather feather-user me-3 fs-16 my-auto"></i>
 													<div class="mt-1">{{trans('langconvert.menu.profile')}}</div>
 												</a>
-												<a class="dropdown-item d-flex" href="{{route('activeticket')}}">
+												<a class="dropdown-item d-flex" href="{{route('tickets-list', 'active')}}">
 													<i class="ri-ticket-2-line me-3 fs-16 my-auto"></i>
 													<div class="mt-1">{{trans('langconvert.menu.ticket')}}</div>
 												</a>

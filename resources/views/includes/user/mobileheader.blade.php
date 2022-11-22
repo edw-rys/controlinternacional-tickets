@@ -2,7 +2,7 @@
 				<div class="support-mobile-header clearfix">
 					<div class="">
 						<div class="d-flex">
-							<a class="animated-arrow horizontal-navtoggle"><span></span></a>
+							<a class="animated-arrow horizontal-navtoggle" onclick="$('.menu-toggle-show-hidden-display').toggleClass('d-block-importante')"><span></span></a>
 							<span class="smallogo">
 								 
 								{{--Logo--}}
@@ -86,7 +86,7 @@
 													<i class="feather feather-user me-3 fs-16 my-auto"></i>
 													<div class="mt-1">Profile</div>
 												</a>
-												<a class="dropdown-item d-flex" href="{{route('activeticket')}}">
+												<a class="dropdown-item d-flex" href="{{route('tickets-list', 'active')}}">
 													<i class="ri-ticket-2-line me-3 fs-16 my-auto"></i>
 													<div class="mt-1">Tickets</div>
 												</a>

@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-use App\Models\Ticket\Ticket;
+// use App\Models\Ticket\Ticket;
 use App\Models\Ticket\Comment;
 use App\Models\Ticket\Category;
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\CategoryUser;
+use App\Models\Hose;
 use App\Models\Ticketnote;
 use App\Models\Subcategorychild;
 use App\Models\Subcategory;
@@ -27,7 +28,7 @@ class Ticket extends Model implements HasMedia
     protected $table ="tickets";
     protected $fillable = [
         'cust_id', 'category_id', 'image', 'ticket_id', 'title', 'priority', 'message', 'status','subject','user_id','project_id','auto_close_ticket',
-        'project', 'purchasecode', 'purchasecodesupport','subcategory'
+        'project', 'purchasecode', 'purchasecodesupport','subcategory', 'hose_id'
     ];
 
     protected $dates = [
@@ -41,6 +42,10 @@ class Ticket extends Model implements HasMedia
     public function cust()
     {
         return $this->belongsTo(Customer::class, 'cust_id');
+    }
+    public function hose()
+    {
+        return $this->belongsTo(Hose::class, 'hose_id');
     }
     
     public function users()

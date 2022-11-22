@@ -119,16 +119,15 @@
                                         <li><a href="{{url('/admin/alltickets')}}" class="slide-item">{{trans('langconvert.adminmenu.alltickets')}}</a></li>
                                         @endcan
                                         @can('My Tickets')
-
-                                        <li><a href="{{url('/admin/myticket')}}" class="slide-item">{{trans('langconvert.adminmenu.mytickets')}}</a></li>
+                                        {{-- <li><a href="{{url('/admin/myticket')}}" class="slide-item">{{trans('langconvert.adminmenu.mytickets')}}</a></li> --}}
                                         @endcan
                                         @can('Active Tickets')
 
-                                        <li><a href="{{url('/admin/activeticket')}}" class="slide-item">{{trans('langconvert.adminmenu.activetickets')}}</a></li>
+                                        <li><a href="{{route('admin.tickets-list', 'active') }}" class="slide-item">{{trans('langconvert.adminmenu.activetickets')}}</a></li>
                                         @endcan
                                         @can('Closed Tickets')
 
-                                        <li><a href="{{url('/admin/closedticket')}}" class="slide-item">{{trans('langconvert.adminmenu.closetickets')}}</a></li>
+                                        <li><a href="{{route('admin.tickets-list', 'closed') }}" class="slide-item">{{trans('langconvert.adminmenu.closetickets')}}</a></li>
                                         @endcan
                                         @can('Assigned Tickets')
 
@@ -140,11 +139,12 @@
                                         @endcan
                                         @can('Onhold Tickets')
 
-                                        <li><a href="{{route('admin.onholdticket')}}" class="slide-item"> {{trans('langconvert.adminmenu.onholdtickets')}} </a></li>
+                                        <li><a href="{{route('admin.tickets-list', 'onhold') }}" class="slide-item"> {{trans('langconvert.adminmenu.onholdtickets')}} </a></li>
                                         @endcan
                                         @can('Overdue Tickets')
 
-                                        <li><a href="{{route('admin.overdueticket')}}" class="slide-item"> {{trans('langconvert.adminmenu.overduetickets')}}</a></li>
+                                        <li><a href="{{route('admin.tickets-list', 'overdue')}}" class="slide-item"> {{trans('langconvert.adminmenu.overduetickets')}}</a></li>
+                                        {{-- <li><a href="{{route('admin.overdueticket')}}" class="slide-item"> {{trans('langconvert.adminmenu.overduetickets')}}</a></li> --}}
                                         @endcan
 
                                     </ul>
@@ -188,7 +188,7 @@
                                     </ul>
                                 </li>
                                 @endcan
-                                @can('Project Access')
+                                {{-- @can('Project Access')
 
                                 <li class="slide">
                                     <a class="side-menu__item"  href="{{url('/admin/projects')}}">
@@ -196,7 +196,7 @@
                                         <span class="side-menu__label">{{trans('langconvert.adminmenu.projects')}}</span>
                                     </a>
                                 </li>
-                                @endcan
+                                @endcan --}}
                                 @can('Managerole Access')
 
                                 <li class="slide">

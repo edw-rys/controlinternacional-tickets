@@ -273,8 +273,8 @@ class AdminprofileController extends Controller
     public function customerscreate()
     {
         $this->authorize('Customers Create');
-        $user = Customer::get();
-        $data['users'] = $user;
+        // $user = Customer::get();
+        // $data['users'] = $user;
 
         $title = Apptitle::first();
         $data['title'] = $title;

@@ -263,7 +263,7 @@
 							$('#AssignError').html('');
 							$('#assigned_form').trigger("reset");
 							$('#addassigned').modal('hide');
-							$('#btnsave').html('Save Changes');
+							$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 							var oTable = $('#myassignedticket').dataTable();
 							oTable.fnDraw(false);
 							toastr.success(data.success);
@@ -271,7 +271,7 @@
 						error: function(data){
 							$('#AssignError').html('');
 							$('#AssignError').html(data.responseJSON.errors.assigned_user_id);
-							$('#btnsave').html('Save Changes');
+							$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 						}
 					});	
 				});

@@ -43962,3 +43962,6 @@ a.text-dark:hover, a.text-dark:focus {
     width: 85% !important;
   }
 }
+.d-block-importante{
+  display: block !important;
+}

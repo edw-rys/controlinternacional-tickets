@@ -84,7 +84,7 @@
 															</div>
 															<div class="px-5 py-4 mt-auto border-top">
 																<div class="text-end btn-list">
-																	<input type="submit" class="btn btn-secondary" value="Save Changes" onclick="this.disabled=true;this.form.submit();">
+																	<input type="submit" class="btn btn-secondary" value="{{ trans('langconvert.admindashboard.savechanges')}}" onclick="this.disabled=true;this.form.submit();">
 																</div>
 															</div>
 															</form>
@@ -135,7 +135,7 @@
 																</div>
 																<div class="px-5 py-4 mt-auto border-top">
 																	<div class="text-end btn-list">
-																		<input type="submit" class="btn btn-secondary" value="Save Changes" onclick="this.disabled=true;this.form.submit();">
+																		<input type="submit" class="btn btn-secondary" value="{{ trans('langconvert.admindashboard.savechanges')}}" onclick="this.disabled=true;this.form.submit();">
 																	</div>
 																</div>
 															</form>
@@ -215,7 +215,7 @@
 																</div>
 																<div class="px-5 py-4 mt-auto border-top">
 																	<div class="text-end btn-list">
-																		<input type="submit" class="btn btn-secondary" value="Save Changes" onclick="this.disabled=true;this.form.submit();">
+																		<input type="submit" class="btn btn-secondary" value="{{ trans('langconvert.admindashboard.savechanges')}}" onclick="this.disabled=true;this.form.submit();">
 																	</div>
 																</div>
 															</form>

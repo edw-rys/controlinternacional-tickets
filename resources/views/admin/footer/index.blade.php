@@ -60,7 +60,7 @@
 
 						<div class="card-footer">
 							<div class="form-group float-end ">
-								<input type="submit" class="btn btn-secondary" value="Save Changes" onclick="this.disabled=true;this.form.submit();">
+								<input type="submit" class="btn btn-secondary" value="{{ trans('langconvert.admindashboard.savechanges')}}" onclick="this.disabled=true;this.form.submit();">
 							</div>
 						</div>
 					</form>	

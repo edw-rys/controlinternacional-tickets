@@ -309,7 +309,7 @@
 						success: (data) => {
 							$('#testimonial_form').trigger("reset");
 							$('#addtestimonial').modal('hide');
-							$('#btnsave').html('Save Changes');
+							$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 							var oTable = $('#support-articlelists').dataTable();
 							oTable.fnDraw(false);
 							toastr.success(data.success);
@@ -327,7 +327,7 @@
 							$('#descriptionError').html(data.responseJSON.errors.notice);
 							$('#startdateError').html(data.responseJSON.errors.startdate);
 							$('#enddateError').html(data.responseJSON.errors.enddate);
-							$('#btnsave').html('Save Changes');
+							$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 						}
 					});
 				});

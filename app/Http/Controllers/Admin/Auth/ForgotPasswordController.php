@@ -10,7 +10,8 @@ use App\Models\Seosetting;
 use App\Models\Apptitle;
 use Artisan;
 use App\Models\passwordreset;
-use Mail;
+use Illuminate\Support\Facades\Mail;
+// use Mail;
 use App\Mail\mailmailablesend;
 
 class ForgotPasswordController extends Controller
@@ -60,23 +61,18 @@ class ForgotPasswordController extends Controller
         ]);
         
         $verifyData = [
-
             'reset_password_url' => route('reset.password',$reset->token),
+        ];
 
-          ];
-
-          try{
-
-            Mail::to($reset->email)
-            ->send( new mailmailablesend( 'forget_password', $verifyData ) );
+        // try{
+            Mail::to($reset->email)->send( new mailmailablesend( 'forget_password', $verifyData ) );
 
         
-        }catch(\Exception $e){
-           
-            return redirect('login')->with('success', 'Email Verfication link as successfully sent.Please Check the mail');        
-        }
+        /*}catch(\Exception $e){
+            return redirect('login')->with('success', 'El enlace de verificación de correo electrónico se ha enviado con éxito. Por favor revise el correo');        
+        }*/
   
-        return back()->with('success', 'We have e-mailed your password reset link!');
+        return back()->with('success', 'Hemos enviado por correo electrónico su enlace de restablecimiento de contraseña!');
     }
 
     

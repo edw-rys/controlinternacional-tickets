@@ -64,7 +64,7 @@
 									<td style="padding:0;width:50%;" align="center">
 										<p style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#969aa5;">
 											Copyright &copy; {{Carbon::now()->format('Y')}} <a href="{{url('/')}}" style="color:#36f;text-decoration:none	;">{{$title->title}}</a>
-											<span>All Rights Reserved.</span>
+											<span>Todos los derechos reservados.</span>
 										</p>
 									</td>
 								</tr>

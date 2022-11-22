@@ -39,24 +39,22 @@ class AdminTicketController extends Controller
      */
     public function index()
     {
-            $tickets = Ticket::paginate(10);
-            $categories = Category::all();
+        $tickets = Ticket::paginate(10);
+        $categories = Category::all();
 
-            $title = Apptitle::first();
-            $data['title'] = $title;
+        $title = Apptitle::first();
+        $data['title'] = $title;
 
-            $footertext = Footertext::first();
-            $data['footertext'] = $footertext;
+        $footertext = Footertext::first();
+        $data['footertext'] = $footertext;
 
-            $seopage = Seosetting::first();
-            $data['seopage'] = $seopage;
+        $seopage = Seosetting::first();
+        $data['seopage'] = $seopage;
 
-            $post = Pages::all();
-            $data['page'] = $post;
-       
-           
-    
-            return view('admin.viewticket.showticket', compact('tickets', 'categories', 'title'))->with($data);
+        $post = Pages::all();
+        $data['page'] = $post;
+
+        return view('admin.viewticket.showticket', compact('tickets', 'categories', 'title'))->with($data);
         
     }
 
@@ -69,7 +67,10 @@ class AdminTicketController extends Controller
     public function show($ticket_id)
     {
         $this->authorize('Ticket Edit');
-        $ticket = Ticket::where('ticket_id', $ticket_id)->firstOrFail();
+        $ticket = Ticket::where('ticket_id', $ticket_id)
+            ->with('hose')
+            ->with('hose.hose_type')
+            ->firstOrFail();
         $comments = $ticket->comments()->latest()->paginate(10);
         
         $category = $ticket->category;
@@ -90,7 +91,6 @@ class AdminTicketController extends Controller
         $data['cannedmessages'] = $cannedmessage;
 
         if (request()->ajax()) {
-            
             $view = view('admin.viewticket.showticketdata',compact('comments'))->render();
             return response()->json(['html'=>$view]);
         }
@@ -797,6 +797,14 @@ class AdminTicketController extends Controller
     
                 return $last_reply;
             })
+            ->addColumn('hose_id', function($data){
+                if($data->hose_id != null){
+                    $hose = Str::limit($data->hose->name, '50');
+                    return $hose;
+                }else{
+                    return '~';
+                }
+            })
             ->addColumn('action', function($data){
     
                 $button = '<div class = "d-flex">';
@@ -940,393 +948,410 @@ class AdminTicketController extends Controller
                 ->whereNotNull('groups_users.users_id')
                 ->where('groups_users.users_id', Auth::id())
                 ->latest('tickets.updated_at')
-                ->get();
+                // ->get()
+                ;
                     
                 return DataTables::of($data)
-                ->addColumn('ticket_id', function($data){
-                    $note = DB::table('ticketnotes')->pluck('ticketnotes.ticket_id')->toArray();
-                    if($data->ticketnote->isEmpty()){
-                        $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.$data->overduestatus.'</span>';
-                    }else{
-                    $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.$data->overduestatus.'</span> <span class="badge badge-warning-light">Note</span>';
-                    }
-                    return $ticket_id;
-                })
-                ->addColumn('subject', function($data){
+                    ->addColumn('ticket_id', function($data){
+                        $note = DB::table('ticketnotes')->pluck('ticketnotes.ticket_id')->toArray();
+                        if($data->ticketnote->isEmpty()){
+                            $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.$data->overduestatus.'</span>';
+                        }else{
+                        $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.$data->overduestatus.'</span> <span class="badge badge-warning-light">Note</span>';
+                        }
+                        return $ticket_id;
+                    })
+                    ->addColumn('subject', function($data){
 
-                    $subject = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.Str::limit($data->subject, '40').'</a>';
-                    
-                    return $subject;
-                })
-                ->addColumn('cust_id',function($data){
-                    $cust_id = $data->cust->username;
-                    return $cust_id;
-                })
-                ->addColumn('priority',function($data){
-                    if($data->priority != null){
-                        if($data->priority == "Low"){
-                            $priority = '<span class="badge badge-success-light">'.$data->priority.'</span>';
-                        }
-                        elseif($data->priority == "High"){
-                            $priority = '<span class="badge badge-danger-light">'.$data->priority.'</span>';
-                        }
-                        elseif($data->priority == "Critical"){
-                            $priority = '<span class="badge badge-danger-dark">'.$data->priority.'</span>';
-                        }
-                        else{
-                            $priority = '<span class="badge badge-warning-light">'.$data->priority.'</span>';
-                        }
-                    }else{
-                        $priority = '~';
-                    }
-                    return $priority;
-                })
-                ->addColumn('created_at',function($data){
-                    $created_at = $data->created_at->format(setting('date_format'));
-                    return $created_at;
-                })
-                ->addColumn('category_id', function($data){
-                    if($data->category_id != null){
-                        $category_id = Str::limit($data->category->name, '40');
-                        return $category_id;
-                    }else{
-                        return '~';
-                    }
-                    
-                })
-                ->addColumn('status', function($data){
-    
-                    if($data->purchasecodesupport != null){
-
-                        if($data->purchasecodesupport == 'Supported'){
-                            if($data->status == "New"){
-                                $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span> <span class="badge badge badge-success"> Supported </span>';
-            
+                        $subject = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.Str::limit($data->subject, '40').'</a>';
+                        
+                        return $subject;
+                    })
+                    ->addColumn('cust_id',function($data){
+                        $cust_id = $data->cust->username;
+                        return $cust_id;
+                    })
+                    ->addColumn('priority',function($data){
+                        if($data->priority != null){
+                            if($data->priority == "Low"){
+                                $priority = '<span class="badge badge-success-light">'.$data->priority.'</span>';
                             }
-                            elseif($data->status == "Re-Open"){
-                                $status = '<span class="badge badge-teal">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                            elseif($data->priority == "High"){
+                                $priority = '<span class="badge badge-danger-light">'.$data->priority.'</span>';
                             }
-                            elseif($data->status == "Inprogress"){
-                                $status = '<span class="badge badge-info">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
-                            }
-                            elseif($data->status == "On-Hold"){
-                                $status = '<span class="badge badge-warning">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                            elseif($data->priority == "Critical"){
+                                $priority = '<span class="badge badge-danger-dark">'.$data->priority.'</span>';
                             }
                             else{
-                                $status = '<span class="badge badge-danger">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                                $priority = '<span class="badge badge-warning-light">'.$data->priority.'</span>';
                             }
-            
-                            return $status;
+                        }else{
+                            $priority = '~';
                         }
-                        if($data->purchasecodesupport == 'Expired'){
-                            if($data->status == "New"){
-                                $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span> <span class="badge badge-danger-dark"> Support Expired </span>';
-            
-                            }
-                            elseif($data->status == "Re-Open"){
-                                $status = '<span class="badge badge-teal">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
-                            }
-                            elseif($data->status == "Inprogress"){
-                                $status = '<span class="badge badge-info">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
-                            }
-                            elseif($data->status == "On-Hold"){
-                                $status = '<span class="badge badge-warning">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
-                            }
-                            else{
-                                $status = '<span class="badge badge-danger">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
-                            }
-            
-                            return $status;
+                        return $priority;
+                    })
+                    ->addColumn('created_at',function($data){
+                        $created_at = $data->created_at->format(setting('date_format'));
+                        return $created_at;
+                    })
+                    ->addColumn('category_id', function($data){
+                        if($data->category_id != null){
+                            $category_id = Str::limit($data->category->name, '40');
+                            return $category_id;
+                        }else{
+                            return '~';
                         }
-
-                    }
-                    if($data->purchasecodesupport == null){
-
-                        if($data->status == "New"){
-                            $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span>';
+                        
+                    })
+                    ->addColumn('status', function($data){
         
-                        }
-                        elseif($data->status == "Re-Open"){
-                            $status = '<span class="badge badge-teal">'.$data->status.'</span> ';
-                        }
-                        elseif($data->status == "Inprogress"){
-                            $status = '<span class="badge badge-info">'.$data->status.'</span>';
-                        }
-                        elseif($data->status == "On-Hold"){
-                            $status = '<span class="badge badge-warning">'.$data->status.'</span>';
-                        }
-                        else{
-                            $status = '<span class="badge badge-danger">'.$data->status.'</span>';
-                        }
-        
-                        return $status;
+                        if($data->purchasecodesupport != null){
 
-                    }
-                })
-                ->addColumn('last_reply', function($data){
-                    if($data->last_reply == null){
-                        $last_reply = $data->created_at->diffForHumans();
-                    }else{
-                        $last_reply = $data->last_reply->diffForHumans();
-                    }
-    
-                    return $last_reply;
-                })
-                ->addColumn('action', function($data){
-    
-                    $button = '<div class = "d-flex">';
-                    if(Auth::user()->can('Ticket Edit')){
-    
-                        $button .= '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'" class="action-btns1 edit-testimonial"><i class="feather feather-edit text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>';
-                    }else{
-                    $button .= '~';
-                    }
-                    if(Auth::user()->can('Ticket Delete')){
-                        $button .= '<a href="javascript:void(0)" data-id="'.$data->id.'" class="action-btns1" id="show-delete" ><i class="feather feather-trash-2 text-danger" data-id="'.$data->id.'" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i></a>';
-                    }else{
-                    $button .= '~';
-                    }
-                    
-                    $button .= '</div>';
-                    return $button;
-                })
-                ->addColumn('toassignuser_id', function($data){
-                    if(Auth::user()->can('Ticket Assign')){
-                        if($data->toassignuser == null){
-                            $toassignuser_id = '<a href="javascript:void(0)" data-id="'.$data->id.'" id="assigned" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Assign">
-                            Assign
-                            </a>';
-                        }
-                        else{
-                            if($data->toassignuser_id != null){
-                                $toassignuser_id = '
-                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
-                                
-                                <a href="javascript:void(0)" data-id="' .$data->id.'"  class="btn btn-outline-primary" id="assigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Change">'.$data->toassignuser->name.'</a>
-                                
-                                <a href="javascript:void(0)" data-id="' .$data->id.'" class="btn btn-outline-primary" id="btnremove"><i class="fe fe-x" data-bs-toggle="tooltip" data-bs-placement="top" title="Unassign"></i></a>
-                                </div>
-                                ';
+                            if($data->purchasecodesupport == 'Supported'){
+                                if($data->status == "New"){
+                                    $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span> <span class="badge badge badge-success"> Supported </span>';
                 
-                            }else{
-                                $toassignuser_id = '<a href="javascript:void(0)" data-id="'.$data->id.'" id="assigned" class="btn btn-outline-primary btn-sm"data-bs-toggle="tooltip" data-bs-placement="top" title="Assign">
-                            Assign
-                            </a>';
+                                }
+                                elseif($data->status == "Re-Open"){
+                                    $status = '<span class="badge badge-teal">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                                }
+                                elseif($data->status == "Inprogress"){
+                                    $status = '<span class="badge badge-info">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                                }
+                                elseif($data->status == "On-Hold"){
+                                    $status = '<span class="badge badge-warning">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                                }
+                                else{
+                                    $status = '<span class="badge badge-danger">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                                }
+                
+                                return $status;
+                            }
+                            if($data->purchasecodesupport == 'Expired'){
+                                if($data->status == "New"){
+                                    $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span> <span class="badge badge-danger-dark"> Support Expired </span>';
+                
+                                }
+                                elseif($data->status == "Re-Open"){
+                                    $status = '<span class="badge badge-teal">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
+                                }
+                                elseif($data->status == "Inprogress"){
+                                    $status = '<span class="badge badge-info">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
+                                }
+                                elseif($data->status == "On-Hold"){
+                                    $status = '<span class="badge badge-warning">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
+                                }
+                                else{
+                                    $status = '<span class="badge badge-danger">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
+                                }
+                
+                                return $status;
+                            }
+
+                        }
+                        if($data->purchasecodesupport == null){
+
+                            if($data->status == "New"){
+                                $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span>';
+            
+                            }
+                            elseif($data->status == "Re-Open"){
+                                $status = '<span class="badge badge-teal">'.$data->status.'</span> ';
+                            }
+                            elseif($data->status == "Inprogress"){
+                                $status = '<span class="badge badge-info">'.$data->status.'</span>';
+                            }
+                            elseif($data->status == "On-Hold"){
+                                $status = '<span class="badge badge-warning">'.$data->status.'</span>';
+                            }
+                            else{
+                                $status = '<span class="badge badge-danger">'.$data->status.'</span>';
+                            }
+            
+                            return $status;
+
+                        }
+                    })
+                    ->addColumn('last_reply', function($data){
+                        if($data->last_reply == null){
+                            $last_reply = $data->created_at->diffForHumans();
+                        }else{
+                            $last_reply = $data->last_reply->diffForHumans();
+                        }
+        
+                        return $last_reply;
+                    })
+                    ->addColumn('action', function($data){
+        
+                        $button = '<div class = "d-flex">';
+                        if(Auth::user()->can('Ticket Edit')){
+        
+                            $button .= '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'" class="action-btns1 edit-testimonial"><i class="feather feather-edit text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>';
+                        }else{
+                        $button .= '~';
+                        }
+                        if(Auth::user()->can('Ticket Delete')){
+                            $button .= '<a href="javascript:void(0)" data-id="'.$data->id.'" class="action-btns1" id="show-delete" ><i class="feather feather-trash-2 text-danger" data-id="'.$data->id.'" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i></a>';
+                        }else{
+                        $button .= '~';
+                        }
+                        
+                        $button .= '</div>';
+                        return $button;
+                    })
+                    ->addColumn('toassignuser_id', function($data){
+                        if(Auth::user()->can('Ticket Assign')){
+                            if($data->toassignuser == null){
+                                $toassignuser_id = '<a href="javascript:void(0)" data-id="'.$data->id.'" id="assigned" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Assign">
+                                Assign
+                                </a>';
+                            }
+                            else{
+                                if($data->toassignuser_id != null){
+                                    $toassignuser_id = '
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
+                                    
+                                    <a href="javascript:void(0)" data-id="' .$data->id.'"  class="btn btn-outline-primary" id="assigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Change">'.$data->toassignuser->name.'</a>
+                                    
+                                    <a href="javascript:void(0)" data-id="' .$data->id.'" class="btn btn-outline-primary" id="btnremove"><i class="fe fe-x" data-bs-toggle="tooltip" data-bs-placement="top" title="Unassign"></i></a>
+                                    </div>
+                                    ';
+                    
+                                }else{
+                                    $toassignuser_id = '<a href="javascript:void(0)" data-id="'.$data->id.'" id="assigned" class="btn btn-outline-primary btn-sm"data-bs-toggle="tooltip" data-bs-placement="top" title="Assign">
+                                Assign
+                                </a>';
+                                }
                             }
                         }
-                    }
-                    else{
-                        $toassignuser_id = '~';
-                    }
-                    return $toassignuser_id;
-                })
-                ->addColumn('checkbox', function($data){
-                    if(Auth::user()->can('Ticket Delete')){
-                        return '<input type="checkbox" name="student_checkbox[]" class="checkall" value="'.$data->id.'" />';
-                    }else{
-                        return '<input type="checkbox" name="student_checkbox[]" class="checkall" value="'.$data->id.'" disabled />';
-                    }
-                })
-                ->rawColumns(['action','cust_id','status','priority','created_at','last_reply','ticket_id','subject','checkbox','toassignuser_id'])
-                ->addIndexColumn()
-                ->make(true);
-            }
+                        else{
+                            $toassignuser_id = '~';
+                        }
+                        return $toassignuser_id;
+                    })
+                    ->addColumn('checkbox', function($data){
+                        if(Auth::user()->can('Ticket Delete')){
+                            return '<input type="checkbox" name="student_checkbox[]" class="checkall" value="'.$data->id.'" />';
+                        }else{
+                            return '<input type="checkbox" name="student_checkbox[]" class="checkall" value="'.$data->id.'" disabled />';
+                        }
+                    })
+                    ->rawColumns(['action','cust_id','status','priority','created_at','last_reply','ticket_id','subject','checkbox','toassignuser_id'])
+                    ->addIndexColumn()
+                    ->make(true);
+                }
         }
         // If no there in group we get the all tickets
         else{
             
 
             if(request()->ajax()) {
-                $data = Ticket::latest('updated_at')->get();
-        
+                $data = Ticket::latest('updated_at')
+                    // ->get()
+                    ;
                 return DataTables::of($data)
-            
-                ->addColumn('ticket_id', function($data){
-                    $note = DB::table('ticketnotes')->pluck('ticketnotes.ticket_id')->toArray();
-                    if($data->ticketnote->isEmpty()){
-                        $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.$data->overduestatus.'</span>';
-                    }else{
-                    $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.$data->overduestatus.'</span> <span class="badge badge-warning-light">Note</span>';
-                    }
-                    return $ticket_id;
-                })
-                ->addColumn('subject', function($data){
-                   
-                    $subject = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.Str::limit($data->subject, '40').'</a>';
+                    ->addColumn('ticket_id', function($data){
+                        $note = DB::table('ticketnotes')->pluck('ticketnotes.ticket_id')->toArray();
+                        if($data->ticketnote->isEmpty()){
+                            $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.$data->overduestatus.'</span>';
+                        }else{
+                        $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.$data->overduestatus.'</span> <span class="badge badge-warning-light">Note</span>';
+                        }
+                        return $ticket_id;
+                    })
+                    ->addColumn('subject', function($data){
                     
-                    return $subject;
-                })
-                ->addColumn('cust_id',function($data){
-                    $cust_id = $data->cust->username;
-                    return $cust_id;
-                })
-                ->addColumn('priority',function($data){
-                    if($data->priority != null){
-                        if($data->priority == "Low"){
-                            $priority = '<span class="badge badge-success-light">'.$data->priority.'</span>';
+                        $subject = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.Str::limit($data->subject, '40').'</a>';
+                        
+                        return $subject;
+                    })
+                    ->addColumn('cust_id',function($data){
+                        $cust_id = $data->cust->username;
+                        return $cust_id;
+                    })
+                    ->addColumn('hose_id', function($data){
+                        if($data->hose_id != null){
+                            $hose = Str::limit($data->hose->name, '50');
+                            return $hose;
+                        }else{
+                            return '~';
                         }
-                        elseif($data->priority == "High"){
-                            $priority = '<span class="badge badge-danger-light">'.$data->priority.'</span>';
-                        }
-                        elseif($data->priority == "Critical"){
-                            $priority = '<span class="badge badge-danger-dark">'.$data->priority.'</span>';
-                        }
-                        else{
-                            $priority = '<span class="badge badge-warning-light">'.$data->priority.'</span>';
-                        }
-                    }else{
-                        $priority = '~';
-                    }
-                    return $priority;
-                })
-                ->addColumn('created_at',function($data){
-                    $created_at = $data->created_at->format(setting('date_format'));
-                    return $created_at;
-                })
-                ->addColumn('category_id', function($data){
-                    if($data->category_id != null){
-                        $category_id = Str::limit($data->category->name, '40');
-                        return $category_id;
-                    }else{
-                        return '~';
-                    }
-                })
-                ->addColumn('status', function($data){
-        
-                    if($data->purchasecodesupport != null){
-
-                        if($data->purchasecodesupport == 'Supported'){
-                            if($data->status == "New"){
-                                $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span> <span class="badge badge badge-success"> Supported </span>';
-            
+                    })
+                    ->addColumn('priority',function($data){
+                        if($data->priority != null){
+                            if($data->priority == "Low"){
+                                $priority = '<span class="badge badge-success-light">'.$data->priority.'</span>';
                             }
-                            elseif($data->status == "Re-Open"){
-                                $status = '<span class="badge badge-teal">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                            elseif($data->priority == "High"){
+                                $priority = '<span class="badge badge-danger-light">'.$data->priority.'</span>';
                             }
-                            elseif($data->status == "Inprogress"){
-                                $status = '<span class="badge badge-info">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
-                            }
-                            elseif($data->status == "On-Hold"){
-                                $status = '<span class="badge badge-warning">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                            elseif($data->priority == "Critical"){
+                                $priority = '<span class="badge badge-danger-dark">'.$data->priority.'</span>';
                             }
                             else{
-                                $status = '<span class="badge badge-danger">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                                $priority = '<span class="badge badge-warning-light">'.$data->priority.'</span>';
                             }
+                        }else{
+                            $priority = '~';
+                        }
+                        return $priority;
+                    })
+                    ->addColumn('created_at',function($data){
+                        $created_at = $data->created_at->format(setting('date_format'));
+                        return $created_at;
+                    })
+                    ->addColumn('category_id', function($data){
+                        if($data->category_id != null){
+                            $category_id = Str::limit($data->category->name, '40');
+                            return $category_id;
+                        }else{
+                            return '~';
+                        }
+                    })
+                    ->addColumn('status', function($data){
             
-                            return $status;
-                        }
-                        if($data->purchasecodesupport == 'Expired'){
-                            if($data->status == "New"){
-                                $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span> <span class="badge badge-danger-dark"> Support Expired </span>';
-            
-                            }
-                            elseif($data->status == "Re-Open"){
-                                $status = '<span class="badge badge-teal">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
-                            }
-                            elseif($data->status == "Inprogress"){
-                                $status = '<span class="badge badge-info">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
-                            }
-                            elseif($data->status == "On-Hold"){
-                                $status = '<span class="badge badge-warning">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
-                            }
-                            else{
-                                $status = '<span class="badge badge-danger">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
-                            }
-            
-                            return $status;
-                        }
+                        if($data->purchasecodesupport != null){
 
-                    }
-                    if($data->purchasecodesupport == null){
-
-                        if($data->status == "New"){
-                            $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span>';
-        
-                        }
-                        elseif($data->status == "Re-Open"){
-                            $status = '<span class="badge badge-teal">'.$data->status.'</span> ';
-                        }
-                        elseif($data->status == "Inprogress"){
-                            $status = '<span class="badge badge-info">'.$data->status.'</span>';
-                        }
-                        elseif($data->status == "On-Hold"){
-                            $status = '<span class="badge badge-warning">'.$data->status.'</span>';
-                        }
-                        else{
-                            $status = '<span class="badge badge-danger">'.$data->status.'</span>';
-                        }
-        
-                        return $status;
-
-                    }
-                })
-                ->addColumn('toassignuser_id', function($data){
-                    if(Auth::user()->can('Ticket Assign')){
-                        if($data->toassignuser == null){
-                            $toassignuser_id = '<a href="javascript:void(0)" data-id="'.$data->id.'" id="assigned" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Assign">
-                            Assign
-                            </a>';
-                        }
-                        else{
-                            if($data->toassignuser_id != null){
-                                $toassignuser_id = '
-                                <div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
-                                
-                                <a href="javascript:void(0)" data-id="' .$data->id.'"  class="btn btn-outline-primary" id="assigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Change">'.$data->toassignuser->name.'</a>
-                                
-                                <a href="javascript:void(0)" data-id="' .$data->id.'" class="btn btn-outline-primary" id="btnremove"><i class="fe fe-x" data-bs-toggle="tooltip" data-bs-placement="top" title="Unassign"></i></a>
-                                </div>
-                                ';
+                            if($data->purchasecodesupport == 'Supported'){
+                                if($data->status == "New"){
+                                    $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span> <span class="badge badge badge-success"> Supported </span>';
                 
-                            }else{
+                                }
+                                elseif($data->status == "Re-Open"){
+                                    $status = '<span class="badge badge-teal">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                                }
+                                elseif($data->status == "Inprogress"){
+                                    $status = '<span class="badge badge-info">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                                }
+                                elseif($data->status == "On-Hold"){
+                                    $status = '<span class="badge badge-warning">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                                }
+                                else{
+                                    $status = '<span class="badge badge-danger">'.$data->status.'</span> <span class="badge badge badge-success"> Supported </span>';
+                                }
+                
+                                return $status;
+                            }
+                            if($data->purchasecodesupport == 'Expired'){
+                                if($data->status == "New"){
+                                    $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span> <span class="badge badge-danger-dark"> Support Expired </span>';
+                
+                                }
+                                elseif($data->status == "Re-Open"){
+                                    $status = '<span class="badge badge-teal">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
+                                }
+                                elseif($data->status == "Inprogress"){
+                                    $status = '<span class="badge badge-info">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
+                                }
+                                elseif($data->status == "On-Hold"){
+                                    $status = '<span class="badge badge-warning">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
+                                }
+                                else{
+                                    $status = '<span class="badge badge-danger">'.$data->status.'</span> <span class="badge badge-danger-dark"> Support Expired </span>';
+                                }
+                
+                                return $status;
+                            }
+
+                        }
+                        if($data->purchasecodesupport == null){
+
+                            if($data->status == "New"){
+                                $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span>';
+            
+                            }
+                            elseif($data->status == "Re-Open"){
+                                $status = '<span class="badge badge-teal">'.$data->status.'</span> ';
+                            }
+                            elseif($data->status == "Inprogress"){
+                                $status = '<span class="badge badge-info">'.$data->status.'</span>';
+                            }
+                            elseif($data->status == "On-Hold"){
+                                $status = '<span class="badge badge-warning">'.$data->status.'</span>';
+                            }
+                            else{
+                                $status = '<span class="badge badge-danger">'.$data->status.'</span>';
+                            }
+            
+                            return $status;
+
+                        }
+                    })
+                    ->addColumn('hose_id', function($data){
+                        if($data->hose_id != null){
+                            $hose = Str::limit($data->hose->name, '50');
+                            return $hose;
+                        }else{
+                            return '~';
+                        }
+                    })
+                    ->addColumn('toassignuser_id', function($data){
+                        if(Auth::user()->can('Ticket Assign')){
+                            if($data->toassignuser == null){
                                 $toassignuser_id = '<a href="javascript:void(0)" data-id="'.$data->id.'" id="assigned" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Assign">
-                            Assign
-                            </a>';
+                                Assign
+                                </a>';
+                            }
+                            else{
+                                if($data->toassignuser_id != null){
+                                    $toassignuser_id = '
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
+                                    
+                                    <a href="javascript:void(0)" data-id="' .$data->id.'"  class="btn btn-outline-primary" id="assigned" data-bs-toggle="tooltip" data-bs-placement="top" title="Change">'.$data->toassignuser->name.'</a>
+                                    
+                                    <a href="javascript:void(0)" data-id="' .$data->id.'" class="btn btn-outline-primary" id="btnremove"><i class="fe fe-x" data-bs-toggle="tooltip" data-bs-placement="top" title="Unassign"></i></a>
+                                    </div>
+                                    ';
+                    
+                                }else{
+                                    $toassignuser_id = '<a href="javascript:void(0)" data-id="'.$data->id.'" id="assigned" class="btn btn-outline-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Assign">
+                                Assign
+                                </a>';
+                                }
                             }
                         }
-                    }
-                    else{
-                        $toassignuser_id = '~';
-                    }
-                    return $toassignuser_id;
-                })
-                ->addColumn('last_reply', function($data){
-                    if($data->last_reply == null){
-                        $last_reply = $data->created_at->diffForHumans();
-                    }else{
-                        $last_reply = $data->last_reply->diffForHumans();
-                    }
-        
-                    return $last_reply;
-                })
-                ->addColumn('action', function($data){
-        
-                    $button = '<div class = "d-flex">';
-                    if(Auth::user()->can('Ticket Edit')){
-        
-                        $button .= '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'" class="action-btns1 edit-testimonial"><i class="feather feather-edit text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>';
-                    }else{
-                        $button .= '~';
-                    }
-                    if(Auth::user()->can('Ticket Delete')){
-                        $button .= '<a href="javascript:void(0)" data-id="'.$data->id.'" class="action-btns1" id="show-delete" ><i class="feather feather-trash-2 text-danger" data-id="'.$data->id.'"data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i></a>';
-                    }else{
-                        $button .= '~';
-                    }
-                    
-                    $button .= '</div>';
-                    return $button;
-                })
-                ->addColumn('checkbox', function($data){
-                    if(Auth::user()->can('Ticket Delete')){
-                        return '<input type="checkbox" name="student_checkbox[]" class="checkall" value="'.$data->id.'" />';
-                    }else{
-                        return '<input type="checkbox" name="student_checkbox[]" class="checkall" value="'.$data->id.'" disabled />';
-                    }
-                })
-                ->rawColumns(['action','cust_id','subject','status','priority','created_at','toassignuser_id','last_reply','ticket_id','checkbox'])
-                ->addIndexColumn()
-                ->make(true);
+                        else{
+                            $toassignuser_id = '~';
+                        }
+                        return $toassignuser_id;
+                    })
+                    ->addColumn('last_reply', function($data){
+                        if($data->last_reply == null){
+                            $last_reply = $data->created_at->diffForHumans();
+                        }else{
+                            $last_reply = $data->last_reply->diffForHumans();
+                        }
+            
+                        return $last_reply;
+                    })
+                    ->addColumn('action', function($data){
+            
+                        $button = '<div class = "d-flex">';
+                        if(Auth::user()->can('Ticket Edit')){
+            
+                            $button .= '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'" class="action-btns1 edit-testimonial"><i class="feather feather-edit text-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"></i></a>';
+                        }else{
+                            $button .= '~';
+                        }
+                        if(Auth::user()->can('Ticket Delete')){
+                            $button .= '<a href="javascript:void(0)" data-id="'.$data->id.'" class="action-btns1" id="show-delete" ><i class="feather feather-trash-2 text-danger" data-id="'.$data->id.'"data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"></i></a>';
+                        }else{
+                            $button .= '~';
+                        }
+                        
+                        $button .= '</div>';
+                        return $button;
+                    })
+                    ->addColumn('checkbox', function($data){
+                        if(Auth::user()->can('Ticket Delete')){
+                            return '<input type="checkbox" name="student_checkbox[]" class="checkall" value="'.$data->id.'" />';
+                        }else{
+                            return '<input type="checkbox" name="student_checkbox[]" class="checkall" value="'.$data->id.'" disabled />';
+                        }
+                    })
+                    ->rawColumns(['action','cust_id','subject','status','priority','created_at','toassignuser_id','last_reply','ticket_id','checkbox'])
+                    ->addIndexColumn()
+                    ->make(true);
                  
             }
         }

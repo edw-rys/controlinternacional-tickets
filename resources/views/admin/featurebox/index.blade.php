@@ -287,7 +287,7 @@
 								$('#nameError').html(data.errors.title);
 								$('#descriptionError').html(data.errors.subtitle);
 								$('#ImageError').html(data.errors.image);
-								$('#btnsave').html('Save Changes');
+								$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 							}
 							if(data.success){
 								$('#nameError').html('');
@@ -295,7 +295,7 @@
 								$('#ImageError').html('');
 								$('#featurebox_form').trigger("reset");
 								$('#addfeature').modal('hide');
-								$('#btnsave').html('Save Changes');
+								$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 								var oTable = $('#featurebox').dataTable();
 								oTable.fnDraw(false);
 								toastr.success(data.success);
@@ -306,7 +306,7 @@
 							$('#descriptionError').html('');
 							$('#ImageError').html('');
 							console.log('Error:', data);
-							$('#btnsave').html('Save Changes');
+							$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 						}
 					});
 				});

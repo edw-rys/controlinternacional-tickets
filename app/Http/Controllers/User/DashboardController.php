@@ -14,15 +14,16 @@ use App\Models\Apptitle;
 use App\Models\Footertext;
 use App\Models\Seosetting;
 use App\Models\Pages;
+use App\Models\Ticket\Category;
 use DataTables;
 use Str;
 class DashboardController extends Controller
 {
     
 
-   public function userTickets()
+   public function userTickets(Request $request)
    {
-       $tickets = Ticket::where('cust_id', Auth::guard('customer')->user()->id)->get();
+       $tickets = Ticket::where('cust_id', Auth::guard('customer')->user()->id)->count();
 
        $active = Ticket::where('cust_id', Auth::guard('customer')->user()->id)
        ->whereIn('status', ['New', 'Re-Open'])->get();
@@ -43,8 +44,23 @@ class DashboardController extends Controller
         $data['page'] = $post;
 
         if(request()->ajax()) {
-            $data = Ticket::where('cust_id', Auth::guard('customer')->user()->id)->latest('updated_at')->get();
+            $data = Ticket::where('cust_id', Auth::guard('customer')->user()->id)->latest('updated_at');
     
+            if($request->category_id != null && $request->category_id != 'all'){
+                $data->where('category_id', $request->category_id);
+            }
+            if($request->priority_id != null && $request->priority_id != 'all'){
+                $data->where('priority', $request->priority_id);
+            }
+
+            if($request->created_start != null && $request->created_start != 'all' && $request->created_start){
+                $data->whereDate('created_at', '>=',$request->created_start);
+            }
+
+            if($request->created_end != null && $request->created_end != 'all' && $request->created_end){
+                $data->whereDate('created_at', '<=', $request->created_end);
+            }
+            
             return DataTables::of($data)
         
             ->addColumn('ticket_id', function($data){
@@ -57,17 +73,19 @@ class DashboardController extends Controller
             })
             ->addColumn('priority',function($data){
                 if($data->priority != null){
+                    $trans = trans('langconvert.newwordslang.' . (strtolower($data->priority)));
+                    // $trans = trans('langconvert.admindashboard.newwordslang.' .($data->priority));
                     if($data->priority == "Low"){
-                        $priority = '<span class="badge badge-success-light">'.$data->priority.'</span>';
+                        $priority = '<span class="badge badge-success-light">'.$trans.'</span>';
                     }
                     elseif($data->priority == "High"){
-                        $priority = '<span class="badge badge-danger-light">'.$data->priority.'</span>';
+                        $priority = '<span class="badge badge-danger-light">'.$trans.'</span>';
                     }
                     elseif($data->priority == "Critical"){
-                        $priority = '<span class="badge badge-danger-dark">'.$data->priority.'</span>';
+                        $priority = '<span class="badge badge-danger-dark">'.$trans.'</span>';
                     }
                     else{
-                        $priority = '<span class="badge badge-warning-light">'.$data->priority.'</span>';
+                        $priority = '<span class="badge badge-warning-light">'.$trans.'</span>';
                     }
                 }else{
                     $priority = '~';
@@ -78,6 +96,14 @@ class DashboardController extends Controller
                 $created_at = $data->created_at->format(setting('date_format'));
                 return $created_at;
             })
+            ->addColumn('hose_id', function($data){
+                if($data->hose_id != null){
+                    $hose = Str::limit($data->hose->name, '50');
+                    return $hose;
+                }else{
+                    return '~';
+                }
+            })
             ->addColumn('category_id', function($data){
                 if($data->category_id != null){
                     $category_id = Str::limit($data->category->name, '10');
@@ -87,19 +113,19 @@ class DashboardController extends Controller
                 }
             })
             ->addColumn('status', function($data){
-    
+
+                $lang = trans('langconvert.admindashboard.' . (strtolower($data->status)));
                 if($data->status == "New"){
-                    $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span>';
-    
+                    $status = '<span class="badge badge-burnt-orange"> '.$lang.' </span>';
                 }
                 elseif($data->status == "Re-Open"){
-                    $status = '<span class="badge badge-teal">'.$data->status.'</span> ';
+                    $status = '<span class="badge badge-teal">'.$lang.'</span> ';
                 }
                 elseif($data->status == "Inprogress"){
-                    $status = '<span class="badge badge-info">'.$data->status.'</span>';
+                    $status = '<span class="badge badge-info">'.$lang.'</span>';
                 }
                 elseif($data->status == "On-Hold"){
-                    $status = '<span class="badge badge-warning">'.$data->status.'</span>';
+                    $status = '<span class="badge badge-warning">'.$lang.'</span>';
                 }
                 else{
                     $status = '<span class="badge badge-danger">'.$data->status.'</span>';
@@ -131,8 +157,10 @@ class DashboardController extends Controller
              
         }
         
+        $data['status'] = 'all';
+        $data['categories'] = Category::whereIn('display',['ticket', 'both'])->where('status', '1')->get();
 
-       return view('user.dashboard', compact('tickets','active','closed', 'title','footertext'))->with($data);
+        return view('user.dashboard', compact('tickets','active','closed', 'title','footertext'))->with($data);
    }
 
 

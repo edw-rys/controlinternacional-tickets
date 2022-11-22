@@ -89,7 +89,7 @@
                 newField.setAttribute('class',`form-control`);
                 newField.setAttribute('readonly',``);
                 newField.setAttribute('rows',3);
-                newField.setAttribute('placeholder','Leave a message for On-Hold');
+                newField.setAttribute('placeholder','Deja un mensaje para en espera');
 
                 let alertDiv = document.createElement('div');
                 alertDiv.setAttribute('class','alert alert-light-warning note mt-4');

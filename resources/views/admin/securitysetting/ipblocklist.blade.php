@@ -207,7 +207,7 @@
 							$('#displayError').html('');
 							$('#IP_form').trigger("reset");
 							$('#addIP').modal('hide');
-							$('#btnipsave').html('Save Changes');
+							$('#btnipsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 							var oTable = $('#support-articlelists').dataTable();
 							oTable.fnDraw(false);
 							toastr.success(data.success);
@@ -217,7 +217,7 @@
 							$('#displayError').html('');
 							$('#nameError').html(data.responseJSON.errors.ip);
 							$('#displayError').html(data.responseJSON.errors.types);
-							$('#btnsave').html('Save Changes');
+							$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 						}
 					});
 				});

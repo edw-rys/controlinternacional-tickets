@@ -103,24 +103,16 @@ class CategoriesController extends Controller
                 })
                 ->addColumn('priority', function($data){
                     if($data->priority != null){
-
+                        $lang = trans('langconvert.newwordslang.' . (strtolower($data->priority)));
                         if($data->priority == "Low"){
-
-                            return '<span class="badge badge-success-light" >'.$data->priority.'</span>';
-                                
+                            return '<span class="badge badge-success-light" >'.$lang.'</span>';
                         }
                         elseif($data->priority == "High"){
-
-                            return '<span class="badge badge-danger-light">'.$data->priority.'</span>';
-                                
+                            return '<span class="badge badge-danger-light">'.$lang.'</span>';
                         }elseif($data->priority == "Critical"){
-
-                            return '<span class="badge badge-danger-dark">'.$data->priority.'</span>';
-                            
+                            return '<span class="badge badge-danger-dark">'.$lang.'</span>';
                         }else{
-
-                            return ' <span class="badge badge-warning-light">'.$data->priority.'</span>';
-                                
+                            return ' <span class="badge badge-warning-light">'.$lang.'</span>';  
                         }
                     }
                     else{
@@ -463,7 +455,7 @@ class CategoriesController extends Controller
             $totalrow = $category->count();
             $ticket = DB::table('tickets')->where('ticket_id', $ticket_id)->first();
             if($totalrow > 0){
-                $output .='<option label="Select Category"></option>';
+                $output .='<option label="Seleccionar Categoría"></option>';
                 foreach($category as $categories){
                     $output .= '
                     <option  value="'.$categories->id.'"'.($categories->id == $ticket->category_id ? 'selected': '').'>'.$categories->name.'</option>
@@ -493,7 +485,7 @@ class CategoriesController extends Controller
            
             $totalrow1 = $category1->count();
             if($totalrow1 > 0){
-                $subcategory .='<option label="Select Category"></option>';
+                $subcategory .='<option label="Seleccionar Categoría"></option>';
                 foreach($category1 as $categories){
 
                     foreach ($categories->subcatlists()->where('status', '1')->get() as $subcategorylist) {
@@ -558,7 +550,7 @@ class CategoriesController extends Controller
             $totalrow = $category->count();
 
             if($totalrow > 0){
-                $output .='<option label="Select Category"></option>';
+                $output .='<option label="Seleccionar Categoría"></option>';
                 foreach($category as $categories){
                     $output .= '
                     <option  value="'.$categories->id.'" '.(in_array($categories->id, $categoryenvato) ? 'selected':'' ).'>'.$categories->name.'</option>
@@ -585,7 +577,7 @@ class CategoriesController extends Controller
                 
                 $category = CategoryEnvato::create([
                     'category_id' => $value,
-                    'envato_enable' => '1'
+                    'envato_enable' => '0'
                 ]);
     
             }

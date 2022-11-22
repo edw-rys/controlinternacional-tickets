@@ -222,7 +222,7 @@
 								$('#nameError').html(data.errors.name);
 								$('#displayError').html(data.errors.display);
 								$('#priorityError').html(data.errors.priority);
-								$('#btnsave').html('Save Changes');
+								$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 								
 							}
 							if(data.success){
@@ -231,7 +231,7 @@
 								$('#priorityError').html('');
 								$('#subcategory_form').trigger("reset");
 								$('#addsubcategory').modal('hide');
-								$('#btnsave').html('Save Changes');
+								$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 								toastr.success(data.success);
 								location.reload();
 							}
@@ -239,7 +239,7 @@
 						},
 						error: function(data){
 							toastr.error('Category name already exists');
-							$('#btnsave').html('Save Changes');
+							$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 						}
 					});
 				});

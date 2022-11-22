@@ -16,13 +16,18 @@ Route::middleware([/*'admincountryblock',*/'throttle:refresh', /*'ipblockunblock
         Route::middleware('auth','admin.auth')->group( function () {
             Route::get('/mark-as-read', 'AdminDashboardController@markNotification')->name('admin.markNotification');
 
+            // start
             Route::get('/', 'AdminDashboardController@index');
+            
+            Route::get('/tickets-list/{status}','AdminDashboardController@listTickets')->name('admin.tickets-list');
+            // Route::get('/activeticket', 'AdminDashboardController@listTickets')->name('admin.activeticket');
             Route::get('/activeticket', 'AdminDashboardController@activeticket')->name('admin.activeticket');
             Route::get('/closedticket', 'AdminDashboardController@closedticket')->name('admin.closedticket');
             Route::get('/assignedtickets', 'AdminDashboardController@assignedTickets');
             Route::get('/myassignedtickets', 'AdminDashboardController@myassignedTickets');
             Route::get('/onholdtickets', 'AdminDashboardController@onholdticket')->name('admin.onholdticket');
             Route::get('/overduetickets', 'AdminDashboardController@overdueticket')->name('admin.overdueticket');
+            // end
             Route::get('/categories', 'CategoriesController@index')->name('categorys.index');
             Route::post('/categories/create', 'CategoriesController@store');
             Route::get('/categories/{id}/edit', 'CategoriesController@show');
@@ -192,18 +197,18 @@ Route::middleware([/*'admincountryblock',*/'throttle:refresh', /*'ipblockunblock
             Route::get('/products/{ticket_id}', 'AdminTicketController@noteshow');
             Route::delete('/ticketnote/delete/{id}', 'AdminTicketController@notedestroy');
             Route::post('userimport', 'AgentCreateController@usercsv')->name('customer.ucsvimport');
-            Route::post('projectimport', 'ProjectsController@projetcsv')->name('project.pcsvimport');
-            Route::get('projectimport', 'ProjectsController@projetimport')->name('projects.pcsvimports');
+            // Route::post('projectimport', 'ProjectsController@projetcsv')->name('project.pcsvimport');
+            // Route::get('projectimport', 'ProjectsController@projetimport')->name('projects.pcsvimports');
             Route::get('maintenancemode', 'MaintanancemodeController@index');
             Route::post('maintenancemode', 'MaintanancemodeController@store')->name('maintanance');
-            Route::get('/projects', 'ProjectsController@index')->name('projects');
+            // Route::get('/projects', 'ProjectsController@index')->name('projects');
             Route::get('/notifications', 'ProjectsController@notificationpage')->name('notificationpage');
-            Route::post('/projects/create', 'ProjectsController@store')->name('projects.create');
-            Route::get('/projects/{id}', 'ProjectsController@show')->name('projects.view');
-            Route::get('/projects/delete/{id}', 'ProjectsController@destroy');
-            Route::get('massproject/delete', 'ProjectsController@projectmassdestroy');
-            Route::get('/projectsassigned', 'ProjectsController@projectlist');
-            Route::post('/projectsassigned', 'ProjectsController@projectassignee');
+            // Route::post('/projects/create', 'ProjectsController@store')->name('projects.create');
+            // Route::get('/projects/{id}', 'ProjectsController@show')->name('projects.view');
+            // Route::get('/projects/delete/{id}', 'ProjectsController@destroy');
+            // Route::get('massproject/delete', 'ProjectsController@projectmassdestroy');
+            // Route::get('/projectsassigned', 'ProjectsController@projectlist');
+            // Route::post('/projectsassigned', 'ProjectsController@projectassignee');
             Route::post('subcat','AdminTicketController@sublist')->name('admin.subcat');
             Route::post('refresh/{id}', 'AdminDashboardController@autorefresh');
             Route::get('reports', 'AdminReportController@index');

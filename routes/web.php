@@ -48,25 +48,26 @@ Route::middleware(ProtectAgainstSpam::class)->group(function() {
 		Route::get('/contact-us', [ContactController::class, 'contact']);
 		Route::post('/contact-us', [ContactController::class, 'saveContact']);
 
-		Route::get('/category/{id}', [CategorypageController::class, 'index']);
+		Route::get('/category/{id}', [CategorypageController::class, 'index']);*/
 
-		Route::get('/guest/openticket', [GuestticketController::class, 'index'])->name('guest.ticket');
-		Route::post('/guest/openticket', [GuestticketController::class, 'gueststore']);
-		Route::post('/guest/storemedia', [GuestticketController::class, 'guestmedia'])->name('guest.imageupload');
 		Route::get('/guest/ticketdetails/{id}', [GuestticketController::class, 'guestdetails'])->name('guest.gusetticket');
 		Route::get('/guest/ticket/{ticket_id}', [GuestticketController::class, 'guestview'])->name('gusetticket');
 		Route::delete('/image/delete/{id}', [GuestticketController::class, 'imagedestroy']);
-		Route::post('guest/closed/{ticket_id}',[GuestticketController::class, 'close'])->name('guesttickets.ticketclose');
-		Route::post('guest/ticket/{ticket_id}',[GuestticketController::class, 'postComment'])->name('guest.comment');
-		Route::get('/rating/{ticket_id}', [GuestticketController::class, 'rating'])->name('guest.rating')->middleware('disablepreventback');
 		Route::get('/rating/star5/{id}', [GuestticketController::class, 'star5']);
 		Route::get('/rating/star4/{id}', [GuestticketController::class, 'star4']);
 		Route::get('/rating/star3/{id}', [GuestticketController::class, 'star3']);
 		Route::get('/rating/star2/{id}', [GuestticketController::class, 'star2']);
 		Route::get('/rating/star1/{id}', [GuestticketController::class, 'star1']);
 		Route::post('envatoverify',[GuestticketController::class, 'envatoverify'])->name('guest.envatoverify');
-		Route::post('/guestticket/editcomment/{id}', [CommentsController::class, 'updateedit']);*/
+		Route::post('/guestticket/editcomment/{id}', [CommentsController::class, 'updateedit']);
 		// Route::post('/guest/emailsvalidate', [GuestticketController::class, 'emailsvalidateguest'])->name('guest.emailsvalidate');
+		Route::get('/rating/{ticket_id}', [GuestticketController::class, 'rating'])->name('guest.rating')->middleware('disablepreventback');
+		Route::post('guest/closed/{ticket_id}',[GuestticketController::class, 'close'])->name('guesttickets.ticketclose');
+		Route::post('guest/ticket/{ticket_id}',[GuestticketController::class, 'postComment'])->name('guest.comment');
+		Route::get('/guest/openticket', [GuestticketController::class, 'index'])->name('guest.ticket');
+		Route::post('/guest/openticket', [GuestticketController::class, 'gueststore']);
+		Route::post('/guest/storemedia', [GuestticketController::class, 'guestmedia'])->name('guest.imageupload');
+
 	});
 	Route::post('/guest/emailsvalidate', [GuestticketController::class, 'emailsvalidateguest'])->name('guest.emailsvalidate');
 	Route::post('/guest/verifyotp', [GuestticketController::class, 'verifyotp'])->name('guest.verifyotp');
@@ -77,4 +78,11 @@ Route::middleware(ProtectAgainstSpam::class)->group(function() {
 	// Route::post('ipblock/update', [App\Http\Controllers\CaptchaipblockController::class, 'update'])->name('ipblock.update');
 	// Route::get('/captchasreload', [App\Http\Controllers\CaptchaipblockController::class, 'captchasreload'])->name('captchas.reload');
 	Route::get('/apifailed', [App\Http\Controllers\ApiController::class, 'index'])->name('apifail.index');
+});
+Route::get('assig', function(){
+
+	$res = app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Envato Access');
+	dd($res, auth()->user()->roles);
+	// $user = \App\Models\User::find(2);
+	// $user->assignRole('admin');
 });

@@ -10,10 +10,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Ticket\Ticket;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Customer extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
 
     /**
@@ -37,6 +38,12 @@ class Customer extends Authenticatable
         'verified',
         'last_login_at',
         'last_login_ip',
+        'company_id',
+        'station_id',
+        'station_name',
+        'station_code',
+        'station_street',
+        'deleted_at',
     ];
 
     /**

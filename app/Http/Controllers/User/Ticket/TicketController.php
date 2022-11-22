@@ -17,6 +17,7 @@ use App\Models\Footertext;
 use App\Models\Seosetting;
 use App\Models\Pages;
 use App\Models\Projects;
+use Illuminate\Validation\Rules\Exists;
 use URL;
 use Mail;
 use App\Mail\mailmailablesend;
@@ -26,6 +27,9 @@ use App\Models\Groupsusers;
 use DataTables;
 use Str;
 use App\Models\Articles\Article;
+use App\Models\ControlInternacional\HoseControlInternacional;
+use App\Models\Hose;
+use App\Models\HoseType;
 
 class TicketController extends Controller
 {
@@ -37,12 +41,9 @@ class TicketController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-
     {
-        
         $categories = Category::whereIn('display',['ticket', 'both'])->where('status', '1')
             ->get();
-
         $title = Apptitle::first();
         $data['title'] = $title;
 
@@ -62,8 +63,63 @@ class TicketController extends Controller
         $data['projects'] = $projects;
 
         return view('user.ticket.create', compact('categories','title','footertext'))->with($data);
-        
-  
+    }
+
+    public function getHosesByUser()
+    {
+        $user = auth()->user();
+        $hoses = Hose::where('company_id', $user->company_id)
+            ->where('station_id', $user->station_id)
+            ->get();
+
+        $references_id = $hoses->map(function($el){return $el->reference_id;})->toArray();
+
+        $hosesCInter = HoseControlInternacional::where('company_id', $user->company_id)
+            ->where('station_id', $user->station_id)
+            ->where('active', 1)
+            ->with('hose_type')
+            ->has('hose_type')
+            ->whereNotIn('id', $references_id)
+            ->get();
+        // store
+        foreach ($hosesCInter as $key => $hose) {
+            // GET TYPE 
+            $type = HoseType::firstOrCreate(
+                [
+                    'reference_id' => $hose->hose_type->id,
+                ],
+                [
+                    'name' => $hose->hose_type->name,
+                    'code'  => $hose->hose_type->code,
+                    'color' => $hose->hose_type->color,
+                    'octane_type' => $hose->hose_type->octane_type,
+                    'reference_id' => $hose->hose_type->id,
+                ]
+            );
+            Hose::firstOrCreate(
+                [
+                    'company_id'=> $user->company_id,
+                    'reference_id'=> $hose->id,
+                    'station_id'=> $user->station_id,
+                ],
+                [
+                    'company_id'=> $user->company_id,
+                    'reference_id'=> $hose->id,
+                    'station_id'=> $user->station_id,
+                    'name'      => $hose->name,
+                    'current_seal'=> $hose->current_seal,
+                    'color'         => $hose->color,
+                    'user_id'       => $user->id,
+                    'hose_type_id'  => $type->id,
+                ]
+            );
+        }
+        $hoses = Hose::where('company_id', $user->company_id)
+            ->where('station_id', $user->station_id)
+            ->get();
+        return response()->json([
+            'data'  => $hoses
+        ]);
     }
     /**
      * Store a newly created resource in storage.
@@ -77,6 +133,7 @@ class TicketController extends Controller
             'subject' => 'required|max:255',
             'category' => 'required',
             'message' => 'required',
+            'hose' => ['required', new Exists('hoses', 'id')],
             
         ]);
 
@@ -87,6 +144,7 @@ class TicketController extends Controller
             'message' => $request->input('message'),
             'project' => $request->input('project'),
             'status' => 'New',
+            'hose_id'   => $request->input('hose')
         ]);
         $ticket = Ticket::find($ticket->id);
         $ticket->ticket_id = setting('CUSTOMER_TICKETID').'-'.$ticket->id;
@@ -212,7 +270,7 @@ class TicketController extends Controller
         ]);
     }
 
-    public function activeticket(){
+    public function listTickets(Request $request, $status){
 
         $title = Apptitle::first();
         $data['title'] = $title;
@@ -225,100 +283,145 @@ class TicketController extends Controller
 
         $post = Pages::all();
         $data['page'] = $post;
+        $data['status'] = $status;
+        $data['categories'] = Category::whereIn('display',['ticket', 'both'])->where('status', '1')->get();
+
 
         if(request()->ajax()) {
-            $data = Ticket::where('cust_id', Auth::guard('customer')->user()->id)->whereIn('status', ['New', 'Re-Open','Inprogress'])->latest('updated_at')->get();
+            $data = Ticket::where('cust_id', Auth::guard('customer')->user()->id)
+                ->latest('updated_at');
+
+            switch ($status) {
+                case 'active':
+                    $data->whereIn('status', ['New', 'Re-Open','Inprogress']);
+                    break;
+                case 'closed':
+                    $data->where('status', 'Closed');
+                    break;
+                case 'close':
+                    $data->where('status', 'Closed');
+                    break;
+                case 'onhold':
+                    $data->where('status', 'On-Hold');
+                    break;
+                default:
+                    break;
+            }
+            if($request->category_id != null && $request->category_id != 'all'){
+                $data->where('category_id', $request->category_id);
+            }
+            if($request->priority_id != null && $request->priority_id != 'all'){
+                $data->where('priority', $request->priority_id);
+            }
+
+            if($request->created_start != null && $request->created_start != 'all' && $request->created_start){
+                $data->whereDate('created_at', '>=',$request->created_start);
+            }
+
+            if($request->created_end != null && $request->created_end != 'all' && $request->created_end){
+                $data->whereDate('created_at', '<=', $request->created_end);
+            }
+            
     
             return DataTables::of($data)
+                ->addColumn('ticket_id', function($data){
+                    
+                    return '<a href="'.route('loadmore.load_data',$data->ticket_id).'">'.$data->ticket_id.'</a>';
+                })
+                ->addColumn('subject', function($data){
+                    $subject = '<a href="'.route('loadmore.load_data',$data->ticket_id).'">'.Str::limit($data->subject, '10').'</a>';
+                    return $subject;
+                })
+                ->addColumn('hose_id', function($data){
+                    if($data->hose_id != null){
+                        $hose = Str::limit($data->hose->name, '50');
+                        return $hose;
+                    }else{
+                        return '~';
+                    }
+                })
+                ->addColumn('priority',function($data){
+                    if($data->priority != null){
+                        $trans = trans('langconvert.newwordslang.' . (strtolower($data->priority)));
+                        if($data->priority == "Low"){
+                            $priority = '<span class="badge badge-success-light">'.$trans.'</span>';
+                        }
+                        elseif($data->priority == "High"){
+                            $priority = '<span class="badge badge-danger-light">'.$trans.'</span>';
+                        }
+                        elseif($data->priority == "Critical"){
+                            $priority = '<span class="badge badge-danger-dark">'.$trans.'</span>';
+                        }
+                        else{
+                            $priority = '<span class="badge badge-warning-light">'.$trans.'</span>';
+                        }
+                    }else{
+                        $priority = '~';
+                    }
+                    return $priority;
+                })
+                ->addColumn('created_at',function($data){
+                    $created_at = $data->created_at->format(setting('date_format'));
+                    return $created_at;
+                })
+                ->addColumn('category_id', function($data){
+                    if($data->category_id != null){
+                        $category_id = Str::limit($data->category->name, '10');
+                        return $category_id;
+                    }else{
+                        return '~';
+                    }
+                })
+                ->addColumn('status', function($data){
         
-            ->addColumn('ticket_id', function($data){
-                
-                return '<a href="'.route('loadmore.load_data',$data->ticket_id).'">'.$data->ticket_id.'</a>';
-            })
-            ->addColumn('subject', function($data){
-                $subject = '<a href="'.route('loadmore.load_data',$data->ticket_id).'">'.Str::limit($data->subject, '10').'</a>';
-                return $subject;
-            })
-            ->addColumn('priority',function($data){
-                if($data->priority != null){
-                    if($data->priority == "Low"){
-                        $priority = '<span class="badge badge-success-light">'.$data->priority.'</span>';
+                    $lang = trans('langconvert.admindashboard.' . (strtolower($data->status)));
+                    if($data->status == "New"){
+                        $status = '<span class="badge badge-burnt-orange"> '.$lang.' </span>';
                     }
-                    elseif($data->priority == "High"){
-                        $priority = '<span class="badge badge-danger-light">'.$data->priority.'</span>';
+                    elseif($data->status == "Re-Open"){
+                        $status = '<span class="badge badge-teal">'.$lang.'</span> ';
                     }
-                    elseif($data->priority == "Critical"){
-                        $priority = '<span class="badge badge-danger-dark">'.$data->priority.'</span>';
+                    elseif($data->status == "Inprogress"){
+                        $status = '<span class="badge badge-info">'.$lang.'</span>';
+                    }
+                    elseif($data->status == "On-Hold"){
+                        $status = '<span class="badge badge-warning">'.$lang.'</span>';
                     }
                     else{
-                        $priority = '<span class="badge badge-warning-light">'.$data->priority.'</span>';
+                        $status = '<span class="badge badge-danger">'.$lang.'</span>';
                     }
-                }else{
-                    $priority = '~';
-                }
-                return $priority;
-            })
-            ->addColumn('created_at',function($data){
-                $created_at = $data->created_at->format(setting('date_format'));
-                return $created_at;
-            })
-            ->addColumn('category_id', function($data){
-                if($data->category_id != null){
-                    $category_id = Str::limit($data->category->name, '10');
-                    return $category_id;
-                }else{
-                    return '~';
-                }
-            })
-            ->addColumn('status', function($data){
-    
-                if($data->status == "New"){
-                    $status = '<span class="badge badge-burnt-orange"> '.$data->status.' </span>';
-    
-                }
-                elseif($data->status == "Re-Open"){
-                    $status = '<span class="badge badge-teal">'.$data->status.'</span> ';
-                }
-                elseif($data->status == "Inprogress"){
-                    $status = '<span class="badge badge-info">'.$data->status.'</span>';
-                }
-                elseif($data->status == "On-Hold"){
-                    $status = '<span class="badge badge-warning">'.$data->status.'</span>';
-                }
-                else{
-                    $status = '<span class="badge badge-danger">'.$data->status.'</span>';
-                }
-    
-                return $status;
-            })
-            ->addColumn('last_reply', function($data){
-                if($data->last_reply == null){
-                    $last_reply = $data->created_at->diffForHumans();
-                }else{
-                    $last_reply = $data->last_reply->diffForHumans();
-                }
-    
-                return $last_reply;
-            })
-            ->addColumn('action', function($data){
-    
-                $button = '<div class = "d-flex">';
-                $button .= '<a href="'.route('loadmore.load_data',$data->ticket_id).'" class="action-btns1" data-bs-toggle="tooltip" data-placement="top" title="View Ticket"><i class="feather feather-edit text-primary"></i></a>
-                            <a href="javascript:void(0)" class="action-btns1" data-id="'.$data->id.'" id="show-delete" data-bs-toggle="tooltip" data-placement="top" title="Delete Ticket"><i class="feather feather-trash-2 text-danger"></i></a>';
-                $button .= '</div>';
-              return $button;
-            })
-            ->addColumn('checkbox', '<input type="checkbox" name="student_checkbox[]" class="checkall" value="{{$id}}" />')
-              ->rawColumns(['action','subject','status','priority','created_at','last_reply','ticket_id','checkbox'])
-              ->addIndexColumn()
-              ->make(true);
+        
+                    return $status;
+                })
+                ->addColumn('last_reply', function($data){
+                    if($data->last_reply == null){
+                        $last_reply = $data->created_at->diffForHumans();
+                    }else{
+                        $last_reply = $data->last_reply->diffForHumans();
+                    }
+        
+                    return $last_reply;
+                })
+                ->addColumn('action', function($data){
+        
+                    $button = '<div class = "d-flex">';
+                    $button .= '<a href="'.route('loadmore.load_data',$data->ticket_id).'" class="action-btns1" data-bs-toggle="tooltip" data-placement="top" title="View Ticket"><i class="feather feather-edit text-primary"></i></a>
+                                <a href="javascript:void(0)" class="action-btns1" data-id="'.$data->id.'" id="show-delete" data-bs-toggle="tooltip" data-placement="top" title="Delete Ticket"><i class="feather feather-trash-2 text-danger"></i></a>';
+                    $button .= '</div>';
+                return $button;
+                })
+                ->addColumn('checkbox', '<input type="checkbox" name="student_checkbox[]" class="checkall" value="{{$id}}" />')
+                ->rawColumns(['action','subject','status','priority','created_at','last_reply','ticket_id','checkbox'])
+                ->addIndexColumn()
+                ->make(true);
              
         }
         
+        return view('user.dashboard', compact('title','footertext'))->with($data);
         return view('user.ticket.viewticket.activeticket', compact('title','footertext'))->with($data);
     } 
     
-    public function closedticket(){
+    /*public function closedticket(){
 
         $title = Apptitle::first();
         $data['title'] = $title;
@@ -372,6 +475,14 @@ class TicketController extends Controller
                 if($data->category_id != null){
                     $category_id = Str::limit($data->category->name, '10');
                     return $category_id;
+                }else{
+                    return '~';
+                }
+            })
+            ->addColumn('hose_id', function($data){
+                if($data->hose_id != null){
+                    $hose = Str::limit($data->hose->name, '50');
+                    return $hose;
                 }else{
                     return '~';
                 }
@@ -451,6 +562,14 @@ class TicketController extends Controller
                 $subject = '<a href="'.route('loadmore.load_data',$data->ticket_id).'">'.Str::limit($data->subject, '10').'</a>';
                 return $subject;
             })
+            ->addColumn('hose_id', function($data){
+                if($data->hose_id != null){
+                    $hose = Str::limit($data->hose->name, '50');
+                    return $hose;
+                }else{
+                    return '~';
+                }
+            })
             ->addColumn('priority',function($data){
                 if($data->priority != null){
                     if($data->priority == "Low"){
@@ -528,7 +647,7 @@ class TicketController extends Controller
         }
         
         return view('user.ticket.viewticket.onholdticket', compact( 'title','footertext'))->with($data);
-    }
+    }*/
       
 
     /**

@@ -344,7 +344,7 @@
 
 						$('#testimonial_form').trigger("reset");
 						$('#addtestimonial').modal('hide');
-						$('#btnsave').html('Save Changes');
+						$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 						var oTable = $('#support-articlelists').dataTable();
 						oTable.fnDraw(false);
 						toastr.success(data.success);
@@ -359,7 +359,7 @@
 						$('#descriptionError').html(data.responseJSON.errors.description);
 						$('#designationError').html(data.responseJSON.errors.designation);
 						$('#imageError').html(data.responseJSON.errors.image);
-						$('#btnsave').html('Save Changes');
+						$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 					}
 					});
 				});

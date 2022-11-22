@@ -89,7 +89,7 @@
 		rtl
 	@endif">
 
-		<div class="page login-bg1">
+		<div class="page {{ isset($is_admin) && $is_admin ? 'login-bg1' : 'login-bg'}}">
 			<div class="page-single">
 				<div class="container">
 					<div class="row justify-content-center">
@@ -105,7 +105,7 @@
 										<img src="{{asset('uploads/logo/logo/logo-white.png')}}" class="header-brand-img custom-logo-dark"
 											alt="logo">
 										@endif
-										@if ($title->image1 !== null)
+										{{-- @if ($title->image1 !== null)
 
 											<img src="{{asset('uploads/logo/darklogo/'.$title->image1)}}" class="header-brand-img custom-logo"
 											alt="{{$title->image1}}">
@@ -114,7 +114,7 @@
 										<img src="{{asset('uploads/logo/darklogo/logo.png')}}" class="header-brand-img custom-logo"
 											alt="logo">
 
-										@endif
+										@endif --}}
 									
 									</a>
 								</div>

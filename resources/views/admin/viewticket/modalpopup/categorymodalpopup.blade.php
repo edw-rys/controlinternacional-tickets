@@ -16,7 +16,7 @@
                             <div class="form-group">
                                 <label class="form-label">Select Category</label>
                                 <div class="custom-controls-stacked d-md-flex" >
-									<select class="form-control select4-show-search" data-placeholder="Select category" name="category" id="sprukocategory" >
+									<select class="form-control select4-show-search" data-placeholder="Selecciona Categoría" name="category" id="sprukocategory" >
 										
 									</select>	
 								</div>
@@ -27,7 +27,7 @@
 							<div class="form-group" id="selectssSubCategory" style="display: none;">
 								
 								<label class="form-label mb-0 mt-2">{{trans('langconvert.newwordslang.ticketsubcategory')}}</label>
-								<select  class="form-control subcategoryselect"  data-placeholder="Select SubCategory" name="subscategory" id="subscategory">
+								<select  class="form-control subcategoryselect"  data-placeholder="Selecciona SubCategoría" name="subscategory" id="subscategory">
 
 								</select>
 								<span id="subsCategoryError" class="text-danger alert-message"></span>

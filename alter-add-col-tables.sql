@@ -12,6 +12,19 @@ ALTER TABLE `users`
 
 
 
+
+
+ALTER TABLE `customers` ADD `company_id` INT(10) UNSIGNED NULL DEFAULT NULL ;
+ALTER TABLE `customers` ADD `station_id` INT(10) UNSIGNED NULL DEFAULT NULL ;
+ALTER TABLE `customers` ADD `station_name` text NULL DEFAULT NULL ;
+ALTER TABLE `customers` ADD `station_code` text NULL DEFAULT NULL ;
+ALTER TABLE `customers` ADD `station_street` text NULL DEFAULT NULL ;
+ALTER TABLE `customers` ADD `deleted_at` datetime NULL DEFAULT NULL ;
+ALTER TABLE `customers`
+  ADD KEY `customer_company_id_foreign` (`company_id`),
+  ADD KEY `customer_station_id_foreign` (`station_id`);
+
+
 --
 -- Estructura de tabla para la tabla `hose_types`
 --
@@ -95,7 +108,7 @@ ALTER TABLE `hoses`
 --
 ALTER TABLE `hoses`
   ADD CONSTRAINT `hoses_hose_type_id_foreign` FOREIGN KEY (`hose_type_id`) REFERENCES `hose_types` (`id`),
-  ADD CONSTRAINT `hoses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `hoses_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `customers` (`id`);
 
 
 
@@ -107,3 +120,17 @@ ALTER TABLE `tickets` ADD `deleted_at` datetime NULL DEFAULT NULL ;
 ALTER TABLE `tickets`
   ADD KEY `hoses_hose_hose_id_foreign` (`hose_id`),
   ADD CONSTRAINT `hoses_hose_hose_id_foreign` FOREIGN KEY (`hose_id`) REFERENCES `hoses` (`id`);
+
+
+
+
+
+
+
+
+
+
+-- EN CONTROLINTERNACIONAL
+
+
+ALTER TABLE `stations` ADD `email_customer` text NULL DEFAULT NULL ;

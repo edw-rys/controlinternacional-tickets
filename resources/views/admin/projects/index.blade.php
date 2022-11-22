@@ -108,7 +108,7 @@
                                 <div class="form-group">
                                     <label class="form-label">{{trans('langconvert.admindashboard.selectcategory')}} </label>
                                     <div class="custom-controls-stacked d-md-flex" >
-                                        <select multiple="multiple" class="form-control select2_modal"  name="category_id[]" data-placeholder="Select Category" id="category" >
+                                        <select multiple="multiple" class="form-control select2_modal"  name="category_id[]" data-placeholder="Selecciona Categoría" id="category" >
                                             @foreach ($categories as $category)
 
 											<option value="{{$category->id}}" {{in_array($category->id,$check_category) ? 'selected':''}}>{{$category->name}}</option>
@@ -351,13 +351,13 @@
 							if(data.errors){
 								$('#nameError').html('');
 								$('#nameError').html(data.errors.name);
-								$('#btnsave').html('Save Changes');
+								$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 							}
 							if(data.success){
 								$('#nameError').html('');
 								$('#projects_form').trigger("reset");
 								$('#addtestimonial').modal('hide');
-								$('#btnsave').html('Save Changes');
+								$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 								var oTable = $('#support-articlelists').dataTable();
 								oTable.fnDraw(false);
 								toastr.success(data.success);
@@ -366,7 +366,7 @@
 						error: function(data){
 							$('#nameError').html('');
 							toastr.error('Project Name is Already Exists');
-							$('#btnsave').html('Save Changes');
+							$('#btnsave').html('{{ trans('langconvert.admindashboard.savechanges')}}');
 						}
 					});
 
