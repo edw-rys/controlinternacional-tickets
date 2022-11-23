@@ -125,14 +125,11 @@
 
                                         <li><a href="{{route('admin.tickets-list', 'active') }}" class="slide-item">{{trans('langconvert.adminmenu.activetickets')}}</a></li>
                                         @endcan
-                                        @can('Closed Tickets')
-
-                                        <li><a href="{{route('admin.tickets-list', 'closed') }}" class="slide-item">{{trans('langconvert.adminmenu.closetickets')}}</a></li>
-                                        @endcan
-                                        @can('Assigned Tickets')
+                                        
+                                        {{-- @can('Assigned Tickets')
 
                                         <li><a href="{{url('/admin/assignedtickets')}}" class="slide-item">{{trans('langconvert.adminmenu.assigntickets')}}</a></li>
-                                        @endcan
+                                        @endcan --}}
                                         @can('My Assigned Tickets')
 
                                         <li><a href="{{url('/admin/myassignedtickets')}}" class="slide-item">{{trans('langconvert.adminmenu.myassigntickets')}}</a></li>
@@ -147,6 +144,10 @@
                                         {{-- <li><a href="{{route('admin.overdueticket')}}" class="slide-item"> {{trans('langconvert.adminmenu.overduetickets')}}</a></li> --}}
                                         @endcan
 
+                                        @can('Closed Tickets')
+
+                                        <li><a href="{{route('admin.tickets-list', 'closed') }}" class="slide-item">{{trans('langconvert.adminmenu.closetickets')}}</a></li>
+                                        @endcan
                                     </ul>
                                 </li>
                                 @endcan
