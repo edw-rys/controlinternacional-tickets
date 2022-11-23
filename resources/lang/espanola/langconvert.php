@@ -11,7 +11,7 @@ return[
         'On-Hold'       => 'En espera',
     ],
     'menu' => [
-        'home' => 'Hogar',
+        'home' => 'Indice',
         'knowledge' => 'Conocimiento',
         'faq' => 'Preguntas Frecuentes',
         'contact' => 'Contáctenos',
@@ -30,7 +30,7 @@ return[
         'enteremail' => 'Ingrese la dirección de correo electrónico que está vinculada a su cuenta.',
         'sendmeback' => 'Envíame de vuelta',
         'doyoulogin' => '¿No tienes cuenta?',
-        'meback' => 'Volver a Hogar',
+        'meback' => 'Volver al índice',
         'createnew' => 'Crear nueva cuenta',
         'createnewacc' => 'Crear cuenta',
         'alreadyacc' => '¿Ya tienes una cuenta?',
