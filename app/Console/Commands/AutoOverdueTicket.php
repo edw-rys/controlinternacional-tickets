@@ -9,6 +9,7 @@ use Mail;
 use App\Mail\mailmailablesend;
 use App\Mail\VerifyMail;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class AutoOverdueTicket extends Command
 {
@@ -43,6 +44,7 @@ class AutoOverdueTicket extends Command
      */
     public function handle()
     {
+        Log::info('TICKET ATRASADO');
         $autooverdues = Ticket::where('auto_overdue_ticket', '<=', now())->get();
 
         foreach($autooverdues as $autooverdue){
