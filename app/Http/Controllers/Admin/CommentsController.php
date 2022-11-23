@@ -264,6 +264,7 @@ class CommentsController extends Controller
     public function reopenticket(Request $req){
 
         $reopenticket = Ticket::find($req->reopenid);
+        $ticket = $reopenticket;
         $reopenticket->status = 'Re-Open';
         $reopenticket->replystatus = null;
         $reopenticket->update();
