@@ -38,7 +38,7 @@
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</a>
-                            <button type="submit" class="btn btn-secondary sprukoapiblock" id="btnsave" >Save</button>
+                            <button type="submit" class="btn btn-secondary sprukoapiblock" id="btnsave" >Guardar</button>
                         </div>
                     </form>
 				</div>

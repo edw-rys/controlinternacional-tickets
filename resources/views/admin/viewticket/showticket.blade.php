@@ -1295,8 +1295,8 @@
 		})
 		$(`.readMore`).showmore({
 			closedHeight: 60,
-			buttonTextMore: 'Read More',
-			buttonTextLess: 'Read Less',
+			buttonTextMore: 'Leer más',
+			buttonTextLess: 'Leer menos',
 			buttonCssClass: 'showmore-button',
 			animationSpeed: 0.5
 		});
@@ -1386,7 +1386,7 @@
 					</div>
 					<div class="modal-footer">
 						<a href="#" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</a>
-						<button type="submit" class="btn btn-secondary" id="btnsave"  >Save</button>
+						<button type="submit" class="btn btn-secondary" id="btnsave"  >Guardar</button>
 					</div>
 				</form>
 			</div>
@@ -1419,7 +1419,7 @@
 						<span id="AssignError" class="text-danger"></span>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-secondary" id="btnsave"  >Save</button>
+						<button type="submit" class="btn btn-secondary" id="btnsave"  >Guardar</button>
 					</div>
 				</form>
 			</div>
@@ -1457,7 +1457,7 @@
 						<span id="PriorityError" class="text-danger"></span>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-secondary" id="pribtnsave" >Save</button>
+						<button type="submit" class="btn btn-secondary" id="pribtnsave" >Guardar</button>
 					</div>
 				</form>
 			</div>

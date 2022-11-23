@@ -209,7 +209,7 @@
             })
             $(`.readMore`).showmore({
                 closedHeight: 60,
-                buttonTextMore: 'Read more',
+                buttonTextMore: 'Leer más',
                 buttonTextLess: 'Close',
                 buttonCssClass: 'showmore-button',
                 animationSpeed: 0.5

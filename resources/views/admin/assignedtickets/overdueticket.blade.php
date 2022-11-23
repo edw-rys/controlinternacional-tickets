@@ -384,7 +384,7 @@
                         <span id="AssignError" class="text-danger"></span>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-secondary" id="btnsave">Save</button>
+                        <button type="submit" class="btn btn-secondary" id="btnsave">Guardar</button>
                     </div>
                 </form>
             </div>

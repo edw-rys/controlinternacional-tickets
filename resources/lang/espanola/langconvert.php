@@ -658,7 +658,7 @@ return[
             'low' => 'Bajo',
             'medium' => 'Medio',
             'high' => 'Alto',
-            'critical' => 'Srítico',
+            'critical' => 'Crítico',
             'chooseprirority' => 'Elija Prioridad',
             'parent_id' => 'categoría de padres',
             'ticketsubcategory' => 'Subcategoría de Ticket',

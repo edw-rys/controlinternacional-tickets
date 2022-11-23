@@ -45,7 +45,7 @@
                         </div>
                         <div class="modal-footer">
                             <a href="#" class="btn btn-outline-danger" id="btnclose" onclick="cancelPost()" data-bs-dismiss="modal">Close</a>
-                            <button type="button" class="btn btn-secondary" id="btnsave" onclick="createPost()" >Save</button>
+                            <button type="button" class="btn btn-secondary" id="btnsave" onclick="createPost()" >Guardar</button>
                         </div>
                     </form>
 				</div>
