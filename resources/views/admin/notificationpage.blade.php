@@ -178,8 +178,8 @@
             })
             $(`.readMore`).showmore({
                 closedHeight: 60,
-                buttonTextMore: 'Read More',
-                buttonTextLess: 'Read Less',
+                buttonTextMore: 'Leer más',
+                buttonTextLess: 'Leer menos',
                 buttonCssClass: 'showmore-button',
                 animationSpeed: 0.5
             });
