@@ -31,11 +31,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
-        $schedule->command('ticket:autoclose')->everyMinute();
-        $schedule->command('ticket:autooverdue')->everyMinute();
-        $schedule->command('ticket:autoresponseticket')->everyMinute();
-        $schedule->command('notification:autodelete')->everyMinute();
-        $schedule->command('imap:emailticket')->everyMinute();
+        $schedule->command('ticket:autoclose')->everySixHours();
+        $schedule->command('ticket:autooverdue')->everySixHours();
+        $schedule->command('ticket:autoresponseticket')->everySixHours();
+        $schedule->command('notification:autodelete')->everySixHours();
+        $schedule->command('imap:emailticket')->everySixHours();
         
 
 
