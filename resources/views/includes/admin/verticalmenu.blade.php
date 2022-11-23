@@ -303,7 +303,7 @@
                                 </li>
                                 @endif
                                 @endcan
-                                @can('App Info Access')
+                                {{-- @can('App Info Access')
 
                                 <li class="slide">
                                     <a class="side-menu__item" data-bs-toggle="slide" href="#">
@@ -320,7 +320,7 @@
 
                                     </ul>
                                 </li>
-                                @endcan
+                                @endcan --}}
                                 @endif
                                 
                                 @can('Groups Access')

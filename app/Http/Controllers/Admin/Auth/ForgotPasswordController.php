@@ -64,13 +64,13 @@ class ForgotPasswordController extends Controller
             'reset_password_url' => route('reset.password',$reset->token),
         ];
 
-        // try{
+        try{
             Mail::to($reset->email)->send( new mailmailablesend( 'forget_password', $verifyData ) );
 
         
-        /*}catch(\Exception $e){
-            return redirect('login')->with('success', 'El enlace de verificación de correo electrónico se ha enviado con éxito. Por favor revise el correo');        
-        }*/
+        }catch(\Exception $e){
+            return redirect('login')->with('error', 'El uso del correo electrónico no está disponible');        
+        }
   
         return back()->with('success', 'Hemos enviado por correo electrónico su enlace de restablecimiento de contraseña!');
     }

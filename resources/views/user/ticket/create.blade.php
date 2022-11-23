@@ -184,7 +184,7 @@
 								</div>
 								<div class="card-footer">
 									<div class="form-group float-end">
-										<input type="submit" class="btn btn-secondary btn-lg purchasecode" value="Create Ticket">
+										<input type="submit" class="btn btn-secondary btn-lg purchasecode" id="create-ticket" value="Crear Ticket">
 									</div>
 								</div>
 							</form>
@@ -405,6 +405,7 @@
 				}, fewSeconds*1000);
 			var formData = new FormData(this);
 
+			$('#create-ticket').val('Guardando...');
 			$.ajax({
 				type:'post',
 				url: '{{route('client.ticketcreate')}}',
@@ -429,9 +430,7 @@
 					window.location.replace('{{url('customer/')}}');
 					
 					$('.purchasecode').removeAttr('disabled');
-					
-					
-					
+					$('#create-ticket').val('Crear Ticket');
 				},
 				error: function(data){
 					$('.purchasecode').removeAttr('disabled');
@@ -441,6 +440,7 @@
 					$('#CategoryError').html(data.responseJSON.errors.category);
 					$('#verifyotpError').html(data.responseJSON.errors.verifyotp);
 					$('.purchasecode').removeAttr('disabled');
+					$('#create-ticket').val('Crear Ticket');
 					
 				}
 			});
