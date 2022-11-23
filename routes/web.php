@@ -30,7 +30,7 @@ use App\Http\Controllers\User\Ticket\CommentsController;
 
 Route::middleware(ProtectAgainstSpam::class)->group(function() {
 
-	Route::middleware(['countrylistbub', 'throttle:refresh', /*'ipblockunblock'*/])->group(function () {
+	Route::middleware(['countrylistbub', /*'throttle:refresh',*/ /*'ipblockunblock'*/])->group(function () {
 
 		Route::get('/', [HomeController::class, 'index'])->name('home');
 		// Route::get('language/{locale}', [HomeController::class, 'setLanguage'])->name('front.set_language');
