@@ -935,7 +935,7 @@
 			$('#priority').on('click', function () {
 
 				$('#PriorityError').html('');
-				$('#btnsave').val("save");
+				$('#btnsave').val("Guardar");
 				$('#priority_form').trigger("reset");
 				$('.modal-title').html("Priority");
 				$('#addpriority').modal('show');

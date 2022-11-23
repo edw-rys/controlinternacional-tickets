@@ -50,7 +50,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <div class="form-group float-end">
-                                                <input type="submit" class="btn btn-secondary"  value="Save" onclick="this.disabled=true;this.form.submit();">
+                                                <input type="submit" class="btn btn-secondary"  value="Guardar" onclick="this.disabled=true;this.form.submit();">
                                             </div>
                                         </div>
                                     </form>

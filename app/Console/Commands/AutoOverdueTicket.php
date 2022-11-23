@@ -45,7 +45,9 @@ class AutoOverdueTicket extends Command
     public function handle()
     {
         Log::info('TICKET ATRASADO');
-        $autooverdues = Ticket::where('auto_overdue_ticket', '<=', now())->get();
+        $autooverdues = Ticket::where('auto_overdue_ticket', '<=', now())
+            ->whereNotIn('status', ['Closed', 'On-Hold'])
+            ->get();
 
         foreach($autooverdues as $autooverdue){
             $autooverdue->overduestatus = 'Overdue';
