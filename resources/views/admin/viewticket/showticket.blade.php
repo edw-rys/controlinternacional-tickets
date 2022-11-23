@@ -191,7 +191,7 @@
 
 									</label>
 									<label class="custom-control form-radio success me-4">
-										<input type="radio" class="custom-control-input hold" name="status" value="Resuelto" >
+										<input type="radio" class="custom-control-input hold" name="status" value="Solved" >
 										<span class="custom-control-label">{{trans('langconvert.newwordslang.solved')}}</span>
 									</label>
 									<label class="custom-control form-radio success me-4">

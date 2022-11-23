@@ -185,11 +185,11 @@
 														<td>:</td>
 														<td>
 															@if($ticket->replystatus == "Solved")
-															<span class="badge badge-success">{{ $ticket->replystatus }}</span>
+															<span class="badge badge-success">{{ trans('langconvert.admindashboard.' . (strtolower($ticket->replystatus))) }}</span>
 															@elseif($ticket->replystatus == "Unanswered")
-															<span class="badge badge-danger-light">{{ $ticket->replystatus }}</span>
+															<span class="badge badge-danger-light">{{ trans('langconvert.admindashboard.' . (strtolower($ticket->replystatus))) }}</span>
 															@elseif($ticket->replystatus == "Waiting Response")
-															<span class="badge badge-warning">{{ $ticket->replystatus }}</span>
+															<span class="badge badge-warning">{{ trans('langconvert.admindashboard.' . (strtolower($ticket->replystatus))) }}</span>
 															@else
 															@endif
 														</td>
