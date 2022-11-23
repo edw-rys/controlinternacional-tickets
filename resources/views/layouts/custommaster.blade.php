@@ -89,7 +89,7 @@
 		rtl
 	@endif">
 
-		<div class="page {{ isset($is_admin) && $is_admin ? 'login-bg1' : 'login-bg'}}">
+		<div class="page {{ isset($is_admin) && $is_admin ? 'login-bg1' : 'login-bg1'}}">
 			<div class="page-single">
 				<div class="container">
 					<div class="row justify-content-center">
