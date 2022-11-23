@@ -262,7 +262,7 @@
 												<span class="font-weight-semibold">{{ $ticket->category->name}}</span>
 												@if ($ticket->status != 'Closed')
 
-												<a href="javascript:void(0)" data-id="{{$ticket->ticket_id}}" class="p-1 sprukocategory border border-primary br-7 text-white bg-primary ms-2"> <i class="feather feather-edit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Change Category"></i></a>
+												<a href="javascript:void(0)" data-id="{{$ticket->ticket_id}}" class="p-1 sprukocategory border border-primary br-7 text-white bg-primary ms-2"> <i class="feather feather-edit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Cambiar Categoría"></i></a>
 												
 												@endif
 												@else
@@ -327,25 +327,25 @@
 
 													<span class="badge badge-success-light" >{{trans('langconvert.newwordslang.' . (strtolower($ticket->priority)))}}</span>
 													<button  id="priority" class="p-1 border border-primary br-7 text-white bg-primary ms-2"> 
-														<i class="feather feather-edit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Change priority" aria-label="Add priority"></i>
+														<i class="feather feather-edit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Cambiar prioridad" aria-label="Add priority"></i>
 													</button>
 												@elseif($ticket->priority == "High")
 
 													<span class="badge badge-danger-light">{{trans('langconvert.newwordslang.' . (strtolower($ticket->priority)))}}</span>
 													<button  id="priority" class="p-1 border border-primary br-7 text-white bg-primary ms-2"> 
-														<i class="feather feather-edit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Change priority" aria-label="Add priority"></i>
+														<i class="feather feather-edit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Cambiar prioridad" aria-label="Add priority"></i>
 													</button>
 												@elseif($ticket->priority == "Critical")
 
 													<span class="badge badge-danger-dark">{{trans('langconvert.newwordslang.' . (strtolower($ticket->priority)))}}</span>
 													<button  id="priority" class="p-1 border border-primary br-7 text-white bg-primary ms-2"> 
-														<i class="feather feather-edit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Change priority" aria-label="Add priority"></i>
+														<i class="feather feather-edit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Cambiar prioridad" aria-label="Add priority"></i>
 													</button>
 												@else
 
 													<span class="badge badge-warning-light">{{trans('langconvert.newwordslang.' . (strtolower($ticket->priority)))}}</span>
 													<button  id="priority" class="p-1 border border-primary br-7 text-white bg-primary ms-2"> 
-														<i class="feather feather-edit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Change priority" aria-label="Add priority"></i>
+														<i class="feather feather-edit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Cambiar prioridad" aria-label="Add priority"></i>
 													</button>
 												@endif
 											</td>
@@ -359,7 +359,7 @@
 											<td>:</td>
 											<td id="priorityid">
 												<button  id="priority" class="p-1 border border-primary br-7 text-white bg-primary ms-2"> 
-													<i class="feather feather-plus" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Change priority" aria-label="Add priority"></i>
+													<i class="feather feather-plus" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Cambiar prioridad" aria-label="Add priority"></i>
 												</button>
 
 												
