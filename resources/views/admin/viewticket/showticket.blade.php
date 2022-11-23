@@ -191,7 +191,7 @@
 
 									</label>
 									<label class="custom-control form-radio success me-4">
-										<input type="radio" class="custom-control-input hold" name="status" value="Solved" >
+										<input type="radio" class="custom-control-input hold" name="status" value="Resuelto" >
 										<span class="custom-control-label">{{trans('langconvert.newwordslang.solved')}}</span>
 									</label>
 									<label class="custom-control form-radio success me-4">
@@ -781,7 +781,7 @@
 				$('#btnsave').val("create-product");
 				$('#ticket_id').val(`{{$ticket->id}}`);
 				$('#note_form').trigger("reset");
-				$('.modal-title').html("Add Note");
+				$('.modal-title').html("Agregar nota");
 				$('#addnote').modal('show');
 
 			});

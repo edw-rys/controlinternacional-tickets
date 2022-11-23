@@ -20,7 +20,7 @@ return[
         'submitticket' => 'enviar ticket',
         'dashboard' => 'Panel de control',
         'profile' => 'Perfil',
-        'ticket' => 'tickets',
+        'ticket' => 'Tickets',
         'logout' => 'Cerrar sesión',
         'accept' => 'Aceptar',
 
