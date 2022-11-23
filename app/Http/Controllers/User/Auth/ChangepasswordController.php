@@ -35,7 +35,7 @@ class ChangepasswordController extends Controller
 
         if($request->current_password == $request->password){
 
-            return back()->with('error', 'Your new password can not be the same as your old password. Please choose a new password.');
+            return back()->with('error', 'Su nueva contraseña no puede ser la misma que su contraseña anterior. Por favor elige una nueva contraseña.');
 
         }else{
             $user = Auth::guard('customer')->user();
