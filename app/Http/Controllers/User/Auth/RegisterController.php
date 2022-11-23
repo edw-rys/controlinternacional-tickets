@@ -33,6 +33,9 @@ class RegisterController extends Controller
    
     public function showRegistrationForm(){
 
+        if(setting('REGISTER_DISABLE') != 'on'){
+            abort(404);
+        }
         $title = Apptitle::first();
         $data['title'] = $title;
 

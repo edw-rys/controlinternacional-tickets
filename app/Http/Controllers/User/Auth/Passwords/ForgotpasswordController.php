@@ -59,7 +59,7 @@ class ForgotpasswordController extends Controller
             return redirect('login')->with('success', 'Email Verfication link as successfully sent.Please Check the mail');        
         }
   
-        return back()->with('success', 'We have e-mailed your password reset link!');
+        return back()->with('success', '¡Le hemos enviado por correo electrónico su enlace de restablecimiento de contraseña!');
     }
 
     public function Emailajax(Request $request){
