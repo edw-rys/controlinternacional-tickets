@@ -151,6 +151,7 @@ return[
         'user' => 'Cliente',
         'tomanyrequest' => 'DEMASIADAS SOLICITUDES',
         'title' => 'Título',
+        're-open'   => 'Abierto nuevamente',
         'priority' => 'Prioridad',
         'category' => 'Categoría',
         'tickethose' => 'Manguera',
