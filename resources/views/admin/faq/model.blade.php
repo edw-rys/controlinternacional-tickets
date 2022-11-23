@@ -4,7 +4,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title"></h5>
-						<button  class="close" data-bs-dismiss="modal" onclick="cancelPost()" aria-label="Close">
+						<button  class="close" data-bs-dismiss="modal" onclick="cancelPost()" aria-label="Cerrar">
 							<span aria-hidden="true" onclick="cancelPost()">×</span>
 						</button>
 					</div>
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="#" class="btn btn-outline-danger" id="btnclose" onclick="cancelPost()" data-bs-dismiss="modal">Close</a>
+                            <a href="#" class="btn btn-outline-danger" id="btnclose" onclick="cancelPost()" data-bs-dismiss="modal">Cerrar</a>
                             <button type="button" class="btn btn-secondary" id="btnsave" onclick="createPost()" >Guardar</button>
                         </div>
                     </form>

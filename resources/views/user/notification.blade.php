@@ -210,7 +210,7 @@
             $(`.readMore`).showmore({
                 closedHeight: 60,
                 buttonTextMore: 'Leer más',
-                buttonTextLess: 'Close',
+                buttonTextLess: 'Cerrar',
                 buttonCssClass: 'showmore-button',
                 animationSpeed: 0.5
             });

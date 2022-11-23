@@ -745,9 +745,9 @@ class AdminDashboardController extends Controller
                     ->addColumn('ticket_id', function($data){
                         $note = DB::table('ticketnotes')->pluck('ticketnotes.ticket_id')->toArray();
                         if($data->ticketnote->isEmpty()){
-                            $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.$data->overduestatus.'</span>';
+                            $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.( ($data->overduestatus != null && $data->overduestatus)  ? trans('langconvert.admindashboard.' . (strtolower($data->overduestatus)) ) : '').'</span>';
                         }else{
-                        $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.$data->overduestatus.'</span> <span class="badge badge-warning-light">Note</span>';
+                        $ticket_id = '<a href="'.url('admin/ticket-view/' . $data->ticket_id).'">'.$data->ticket_id.'</a> <span class="badge badge-danger-light">'.( ($data->overduestatus != null && $data->overduestatus)  ? trans('langconvert.admindashboard.' . (strtolower($data->overduestatus)) ) : '').'</span> <span class="badge badge-warning-light">Note</span>';
                         }
                         return $ticket_id;
                     })

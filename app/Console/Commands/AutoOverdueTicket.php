@@ -8,6 +8,7 @@ use App\Models\User;
 use Mail;
 use App\Mail\mailmailablesend;
 use App\Mail\VerifyMail;
+use App\Notifications\TicketCreateNotifications;
 use Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -51,6 +52,7 @@ class AutoOverdueTicket extends Command
 
         foreach($autooverdues as $autooverdue){
             $autooverdue->overduestatus = 'Overdue';
+            $ticket = $autooverdue;
             $autooverdue->auto_overdue_ticket = null;
         
             $autooverdue->update();

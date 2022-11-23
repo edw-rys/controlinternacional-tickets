@@ -4,7 +4,7 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" ></h5>
-						<button  class="close" data-bs-dismiss="modal" aria-label="Close">
+						<button  class="close" data-bs-dismiss="modal" aria-label="Cerrar">
 							<span aria-hidden="true">×</span>
 						</button>
 					</div>
@@ -37,7 +37,7 @@
 							</div>
                         </div>
                         <div class="modal-footer">
-                            <a href="#" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</a>
+                            <a href="#" class="btn btn-outline-danger" data-bs-dismiss="modal">Cerrar</a>
                             <button type="submit" class="btn btn-secondary sprukoapiblock" id="btnsave" >Guardar</button>
                         </div>
                     </form>

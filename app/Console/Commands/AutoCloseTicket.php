@@ -46,7 +46,8 @@ class AutoCloseTicket extends Command
     public function handle()
     {
         
-        $autocloses = Ticket::where('auto_close_ticket', '<=', now())->get();
+        $autocloses = Ticket::where('auto_close_ticket', '<=', now())
+            ->whereNotNull('auto_close_ticket')->get();
         foreach($autocloses as $autoclose){
             if($autoclose->replystatus == 'Solved'){
                 $autoclose->status = 'Closed';

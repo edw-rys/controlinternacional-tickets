@@ -144,6 +144,7 @@ return[
         'ticketssummary' => 'Resumen tickets',
         'autorefresh' => 'Habilitar actualización automática (cada 30 segundos)',
         'slNo' => 'S.No',
+        'overdue' => 'Atrasado',
         'savechanges' => 'Guardar',
         'id' => 'ID',
         'user' => 'Cliente',

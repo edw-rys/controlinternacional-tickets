@@ -34,8 +34,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('ticket:autoclose')->everySixHours();
         $schedule->command('ticket:autooverdue')->everySixHours();
         $schedule->command('ticket:autoresponseticket')->everySixHours();
-        $schedule->command('notification:autodelete')->everySixHours();
-        $schedule->command('imap:emailticket')->everySixHours();
+        // $schedule->command('notification:autodelete')->everySixHours();
+        // $schedule->command('imap:emailticket')->everySixHours();
         
 
 
