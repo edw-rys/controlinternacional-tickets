@@ -111,10 +111,10 @@
 													<i class="feather feather-grid me-3 fs-16 my-auto"></i>
 													<div class="mt-1">{{trans('langconvert.menu.dashboard')}}</div>
 												</a>
-												<a class="dropdown-item d-flex" href="{{route('client.profile')}}">
+												{{-- <a class="dropdown-item d-flex" href="{{route('client.profile')}}">
 													<i class="feather feather-user me-3 fs-16 my-auto"></i>
 													<div class="mt-1">{{trans('langconvert.menu.profile')}}</div>
-												</a>
+												</a> --}}
 												<a class="dropdown-item d-flex" href="{{route('tickets-list', 'active')}}">
 													<i class="ri-ticket-2-line me-3 fs-16 my-auto"></i>
 													<div class="mt-1">{{trans('langconvert.menu.ticket')}}</div>

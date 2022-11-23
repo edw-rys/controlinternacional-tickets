@@ -34,10 +34,10 @@ Route::group(['namespace' => 'User', 'prefix' => 'customer'], function(){
 
         Route::get('/mark-as-read', 'DashboardController@markNotification')->name('customer.markNotification');
         Route::get('/', 'DashboardController@userTickets')->name('client.dashboard');
-        Route::get('/profile','Profile\UserprofileController@profile')->name('client.profile');
-        Route::post('/profile','Profile\UserprofileController@profilesetup')->name('client.profilesetup');
-        Route::post('/deleteaccount/{id}','Profile\UserprofileController@profiledelete')->name('client.profiledelete');
-        Route::delete('/image/remove/{id}', 'Profile\UserprofileController@imageremove');
+        // Route::get('/profile','Profile\UserprofileController@profile')->name('client.profile');
+        // Route::post('/profile','Profile\UserprofileController@profilesetup')->name('client.profilesetup');
+        // Route::post('/deleteaccount/{id}','Profile\UserprofileController@profiledelete')->name('client.profiledelete');
+        // Route::delete('/image/remove/{id}', 'Profile\UserprofileController@imageremove');
         Route::post('/custsettings', 'Profile\UserprofileController@custsetting');
         Route::get('/ticket','Ticket\TicketController@create')->name('client.ticket');
         Route::post('/ticket','Ticket\TicketController@store')->name('client.ticketcreate');

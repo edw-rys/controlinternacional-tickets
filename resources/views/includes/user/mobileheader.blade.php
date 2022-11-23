@@ -82,10 +82,10 @@
 													<a href="#" class="text-center user pb-0 font-weight-bold">{{Auth::guard('customer')->user()->username}}</a>
 													<p class="text-center user-semi-title">{{Auth::guard('customer')->user()->email}}</p>
 												</div>
-												<a class="dropdown-item d-flex" href="{{route('client.profile')}}">
+												{{-- <a class="dropdown-item d-flex" href="{{route('client.profile')}}">
 													<i class="feather feather-user me-3 fs-16 my-auto"></i>
 													<div class="mt-1">Profile</div>
-												</a>
+												</a> --}}
 												<a class="dropdown-item d-flex" href="{{route('tickets-list', 'active')}}">
 													<i class="ri-ticket-2-line me-3 fs-16 my-auto"></i>
 													<div class="mt-1">Tickets</div>
