@@ -44,7 +44,7 @@ class ChangepasswordController extends Controller
                 $user->save();
                 Auth::guard('customer')->logout();
 
-                return  redirect()->route('auth.login')->with('success', 'Password successfully changed!');
+                return  redirect()->route('auth.login')->with('success', '¡Su contraseña ha sido cambiada exitosamente!');
             }
             else{
                 
