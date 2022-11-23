@@ -87,7 +87,7 @@
 				});
 
 				//Datatable
-				$('#roleslist').DataTable({
+				$('#roleslist').DataTable({language : languajeDT,
 					processing: true,
 					serverSide: true,
 					ajax: {

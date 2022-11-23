@@ -77,7 +77,7 @@
 				@if ($status == 'all')
 					<div class="col-xl-3 col-lg-6 col-md-12">
 						<div class="card">
-							<a href="{{route('admin.alltickets')}}" class="admintickets"></a>
+							<a href="{{route('admin.tickets-list', 'all')}}" class="admintickets"></a>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-8">
@@ -94,7 +94,7 @@
 					</div>
 					<div class="col-xl-3 col-lg-6 col-md-12">
 						<div class="card">
-							<a href="{{route('admin.activeticket')}}" class="admintickets"></a>
+							<a href="{{ route('admin.tickets-list', 'active') }}" class="admintickets"></a>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-8">
@@ -110,7 +110,7 @@
 					</div>
 					<div class="col-xl-3 col-lg-6 col-md-12">
 						<div class="card">
-							<a href="{{route('admin.closedticket')}}" class="admintickets"></a>
+							<a href="{{route('admin.tickets-list', 'closed')}}" class="admintickets"></a>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-8">
@@ -127,7 +127,7 @@
 					</div>
 					<div class="col-xl-3 col-lg-6 col-md-12">
 						<div class="card">
-							<a href="{{route('admin.onholdticket')}}" class="admintickets"></a>
+							<a href="{{ route('admin.tickets-list', 'onhold') }}" class="admintickets"></a>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-8">
@@ -141,59 +141,10 @@
 							</div>
 						</div>
 					</div>
+					
 					<div class="col-xl-3 col-lg-6 col-md-12">
 						<div class="card">
-							<a href="{{url('/admin/myticket')}}" class="admintickets"></a>
-							<div class="card-body">
-								<div class="row">
-									<div class="col-8">
-										<div class="mt-0 text-start"><span class="fs-14 font-weight-semibold">{{trans('langconvert.adminmenu.mytickets')}}</span>
-											<h3 class="mb-0 mt-1 mb-2">{{$myticket->count()}}</h3>
-										</div>
-									</div>
-									<div class="col-4">
-										<div class="icon1 bg-primary my-auto  float-end"> <i class="las la-ticket-alt"></i> </div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xl-3 col-lg-6 col-md-12">
-						<div class="card">
-							<a href="{{url('/admin/assignedtickets')}}" class="admintickets"></a>
-							<div class="card-body">
-								<div class="row">
-									<div class="col-8">
-										<div class="mt-0 text-start"> <span class="fs-14 font-weight-semibold">{{trans('langconvert.adminmenu.assigntickets')}}</span>
-										<h3 class="mb-0 mt-1  mb-2">{{$assigned->count()}}</h3> </div>
-									</div>
-									<div class="col-4">
-										<div class="icon1 bg-primary brround my-auto  float-end"> <i class="las la-ticket-alt"></i> </div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xl-3 col-lg-6 col-md-12">
-						<div class="card">
-							<a href="{{url('/admin/myassignedtickets')}}" class="admintickets"></a>
-							<div class="card-body">
-								<div class="row">
-									<div class="col-8">
-										<div class="mt-0 text-start"><span class="fs-14 font-weight-semibold">{{trans('langconvert.adminmenu.myassigntickets')}}</span>
-											<h3 class="mb-0 mt-1 mb-2">{{$myassigned->count()}}</h3>
-										</div>
-									</div>
-									<div class="col-4">
-										<div class="icon1 bg-primary my-auto  float-end"> <i class="las la-ticket-alt"></i> </div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-xl-3 col-lg-6 col-md-12">
-						<div class="card">
-							<a href="{{route('admin.overdueticket')}}" class="admintickets"></a>
+							<a href="{{route('admin.tickets-list', 'overdue')}}" class="admintickets"></a>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-8">
@@ -220,6 +171,14 @@
 								<div class="mb-3">
 									
 									<div class="row">
+										<div class="col-xl-4 col-md-4 col-12">
+											<label class="form-label mb-0 mt-2">{{trans('langconvert.adminmenu.customers')}}</label>
+											<select
+												class="form-control select2-show-search select2"
+												data-placeholder="Selecciona Categoría" name="customer_id" id="customer_id">
+												<option value="all">Todos</option>
+											</select>
+										</div>
 										@if (isset($categories))
 											<div class="col-xl-4 col-md-4 col-12">
 												<label class="form-label mb-0 mt-2">{{trans('langconvert.admindashboard.ticketcategory')}}</label>
@@ -355,6 +314,27 @@
 
 		(function($)  {
 
+			$("#customer_id").select2({
+                ajax: {
+                    url: "{{ route('customer-list-json') }}",
+                    processResults: function (data) {
+                        console.log($.map(data, function(obj) {
+                                return { id: obj.id, text: obj.username };
+                            }));
+                        return {
+                            results: $.map(data, function(obj) {
+                                return { id: obj.id, text: obj.username };
+                            }),
+                            pagination: {
+                                // En caso de que no necesites paginar
+                                more: false
+                            }
+                        };
+                    }
+                },
+                language: 'es',
+            });
+
 			// Variables
 			var SITEURL = '{{url('')}}';
 
@@ -378,8 +358,8 @@
 			});
 
 			// Datatable
-			var table = $('#supportticket-dashe').DataTable({
-				dom: '<"row"<"col-md-12 col-lg-1"l><"col-md-12 col-lg-4"B><"col-md-12 col-lg-7"f>r>tip',
+			var table = $('#supportticket-dashe').DataTable({language : languajeDT,
+				dom: '<"row"<"col-md-12 col-lg-2"l><"col-md-12 col-lg-3"B><"col-md-12 col-lg-7"f>r>tip',
 				buttons: [
 					{
 						className:'ticketdelete',
@@ -495,8 +475,10 @@
 					var priority_id = $('#priority_id').val();
 					var created_start = $('#created_start').val();
 					var created_end = $('#created_end').val();
+					var customer_id = $('#customer_id').val();
 					
 					data['category_id'] = category_id;
+					data['customer_id'] = customer_id;
 					data['priority_id'] = priority_id;
 					data['created_start'] = created_start;
 					data['created_end'] = created_end;
@@ -510,6 +492,8 @@
 				$('#filter-form')[0].reset();
 				$('#category_id').val('all').trigger('change');
 				$('#priority_id').val('all').trigger('change');
+				$('#customer_id').val('all').trigger('change');
+				
 				loadDataTable();
 			})
 			//Auto reload on/off

@@ -113,7 +113,7 @@
 				});
 				
 				// Datatable
-				var table = $('#assignedticket').DataTable({
+				var table = $('#assignedticket').DataTable({language : languajeDT,
 					processing:true,
 					serverSide:true,
 					ajax: {

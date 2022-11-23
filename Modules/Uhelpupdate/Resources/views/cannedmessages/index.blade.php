@@ -103,7 +103,7 @@
 				});
 
                 // Datatable
-				$('#cannedmessages').dataTable({
+				$('#cannedmessages').DataTable({language : languajeDT,
                     processing: true,
 					serverSide: true,
 					ajax: {

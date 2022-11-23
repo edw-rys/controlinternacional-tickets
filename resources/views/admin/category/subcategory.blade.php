@@ -138,7 +138,7 @@
 				});
 				
 				// Datatable
-				$('#support-articlelists').dataTable({
+				$('#support-articlelists').DataTable({language : languajeDT,
 					processing: true,
 					order:[],
 					responsive: true,

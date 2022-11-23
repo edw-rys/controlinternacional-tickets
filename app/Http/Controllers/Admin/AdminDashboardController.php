@@ -728,6 +728,9 @@ class AdminDashboardController extends Controller
                 if($request->priority_id != null && $request->priority_id != 'all'){
                     $data->where('priority', $request->priority_id);
                 }
+                if($request->customer_id != null && $request->customer_id != 'all'){
+                    $data->where('cust_id', $request->customer_id);
+                }
 
                 if($request->created_start != null && $request->created_start != 'all' && $request->created_start){
                     $data->whereDate('created_at', '>=',$request->created_start);

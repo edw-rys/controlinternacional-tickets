@@ -180,7 +180,7 @@
 				});
 
 				// Datatable
-				$('#articlelist').DataTable({
+				$('#articlelist').DataTable({language : languajeDT,
 
 					processing: true,
 					serverSide: true,

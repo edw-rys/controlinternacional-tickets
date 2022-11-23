@@ -76,11 +76,9 @@ return[
     ],
 
     'adminmenu' => [
-
-        
         'createticket' => 'Crear Ticket',
         'visitsite' => 'Visite Sitio',
-        'alltickets' => 'Todo Tickets',
+        'alltickets' => 'Todos los Tickets',
         'mytickets' => 'Mis Tickets',
         'activetickets' => 'Tickets Activos',
         'closetickets' => 'Tickets cerrados',

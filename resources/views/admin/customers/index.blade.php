@@ -115,7 +115,7 @@
 				});
 
 				// Datatable
-				$('#support-customerlist').DataTable({
+				$('#support-customerlist').DataTable({language : languajeDT,
 					processing: true,
 					serverSide: true,
 					ajax: {

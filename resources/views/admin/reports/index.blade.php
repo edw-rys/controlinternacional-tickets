@@ -320,7 +320,7 @@
 			(function ($) {
 
 				// Datatable
-				$('#reports').DataTable({
+				$('#reports').DataTable({language : languajeDT,
 					processing: true,
 					serverSide: true,
 					ajax: {

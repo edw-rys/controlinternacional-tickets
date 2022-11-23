@@ -183,7 +183,7 @@
 				});
 
 				// Datatable
-				$('#support-articlelists').DataTable({
+				$('#support-articlelists').DataTable({language : languajeDT,
 					processing: true,
 					serverSide: true,
 					ajax: {

@@ -109,7 +109,7 @@
             });
 
             // DataTable
-            var table = $('#overduetickets').DataTable({
+            var table = $('#overduetickets').DataTable({language : languajeDT,
                 processing: true,
                 serverSide: true,
                 ajax: {

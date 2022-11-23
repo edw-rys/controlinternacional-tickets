@@ -179,7 +179,7 @@
 				});
 
 				// Datatable
-				$('#support-articlelists').dataTable({
+				$('#support-articlelists').DataTable({language : languajeDT,
 
 					processing: true,
 					serverSide: true,

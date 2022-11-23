@@ -80,7 +80,7 @@
 			"use strict";
 			
 			// Datatable
-			$('#support-articlelists').dataTable({
+			$('#support-articlelists').DataTable({language : languajeDT,
 				order:[],
 				responsive: true,
 			});

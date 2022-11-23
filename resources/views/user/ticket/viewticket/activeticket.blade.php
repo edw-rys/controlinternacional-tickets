@@ -117,12 +117,7 @@
 			});
 
 			//________ Data Table
-			$('#activeticket').DataTable({
-				
-				language: {
-					searchPlaceholder: 'Search...',
-					sSearch: '',
-				},
+			$('#activeticket').DataTable({language : languajeDT,
 				processing: true,
 				serverSide: true,
 				ajax: {

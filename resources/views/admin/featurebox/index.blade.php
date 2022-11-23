@@ -168,7 +168,7 @@
 				});
 
 				// Datatable
-				$('#featurebox').DataTable({
+				$('#featurebox').DataTable({language : languajeDT,
 					processing: true,
 					serverSide: true,
 					ajax: {

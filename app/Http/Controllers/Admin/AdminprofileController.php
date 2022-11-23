@@ -23,7 +23,7 @@ use Illuminate\Support\Str;
 use Mail;
 use App\Mail\mailmailablesend;
 use Maatwebsite\Excel\Facades\Excel;
-use DB;
+use Illuminate\Support\Facades\DB;
 use DataTables;
 use Session;
 class AdminprofileController extends Controller
@@ -348,6 +348,23 @@ class AdminprofileController extends Controller
         }
         return redirect('admin/customer')->with('success', trans('langconvert.functions.customercreate'));
 
+    }
+
+    public function customersListJson(Request $request)
+    {
+        if($request->input('q') == '' || $request->input('q') == null){
+            return response()->json([]);
+        }
+        $clients = (new Customer)->where(DB::raw('LOWER(username)'), 'like', '%' . strtolower($request->input('q')) . '%')
+            ->get();
+
+        if ($request->one == '1') {
+            $clients->prepend((object) [ 'id'=> 'all', 'username'=> 'Seleccione cliente']); //dd($clients);
+        }else{
+            $clients->prepend((object) [ 'id'=> 'all', 'username'=> 'Todos']); //dd($clients);
+        }
+        
+        return response()->json($clients);
     }
 
     public function customersshow($id){

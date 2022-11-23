@@ -180,7 +180,7 @@
 				});
 
 				// Datatable
-				$('#supportuserlist').DataTable({
+				$('#supportuserlist').DataTable({language : languajeDT,
 					"columnDefs": [
                        { "orderable": false, "targets":[ 0,1] }
 							],

@@ -113,13 +113,7 @@
 			});
 
 			//________ Data Table
-			$('#closedtickets').DataTable({
-				
-				language: {
-					searchPlaceholder: 'Search...',
-					sSearch: '',
-
-				},
+			$('#closedtickets').DataTable({language : languajeDT,
 				processing: true,
 				serverSide: true,
 				ajax: {

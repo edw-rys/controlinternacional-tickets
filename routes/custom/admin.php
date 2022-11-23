@@ -21,12 +21,12 @@ Route::middleware([/*'admincountryblock','throttle:refresh', 'ipblockunblock'*/]
             
             Route::get('/tickets-list/{status}','AdminDashboardController@listTickets')->name('admin.tickets-list');
             // Route::get('/activeticket', 'AdminDashboardController@listTickets')->name('admin.activeticket');
-            Route::get('/activeticket', 'AdminDashboardController@activeticket')->name('admin.activeticket');
-            Route::get('/closedticket', 'AdminDashboardController@closedticket')->name('admin.closedticket');
-            Route::get('/assignedtickets', 'AdminDashboardController@assignedTickets');
-            Route::get('/myassignedtickets', 'AdminDashboardController@myassignedTickets');
-            Route::get('/onholdtickets', 'AdminDashboardController@onholdticket')->name('admin.onholdticket');
-            Route::get('/overduetickets', 'AdminDashboardController@overdueticket')->name('admin.overdueticket');
+            // Route::get('/activeticket', 'AdminDashboardController@activeticket')->name('admin.activeticket');
+            // Route::get('/closedticket', 'AdminDashboardController@closedticket')->name('admin.closedticket');
+            // Route::get('/assignedtickets', 'AdminDashboardController@assignedTickets');
+            // Route::get('/myassignedtickets', 'AdminDashboardController@myassignedTickets');
+            // Route::get('/onholdtickets', 'AdminDashboardController@onholdticket')->name('admin.onholdticket');
+            // Route::get('/overduetickets', 'AdminDashboardController@overdueticket')->name('admin.overdueticket');
             // end
             Route::get('/categories', 'CategoriesController@index')->name('categorys.index');
             Route::post('/categories/create', 'CategoriesController@store');
@@ -149,6 +149,7 @@ Route::middleware([/*'admincountryblock','throttle:refresh', 'ipblockunblock'*/]
             Route::post('/datetimeformat', 'AdminSettingController@datetimeformatstore')->name('settings.timedateformat.store');
             Route::get('/general/dark', 'ApptitleController@check');
             Route::get('/customer', 'AdminprofileController@customers');
+            Route::get('/customer-list-json', 'AdminprofileController@customersListJson')->name('customer-list-json');
             Route::post('/knowledge', 'AdminSettingController@knowledge')->name('settings.knowledge.store');
             Route::post('/profileuser', 'AdminSettingController@profileuser')->name('settings.profileuser.store');
             Route::post('/profileagent', 'AdminSettingController@profileagent')->name('settings.profileagent.store');

@@ -119,7 +119,7 @@
                 });
                 
                 // Datatable
-                $('#customnotifications').DataTable({
+                $('#customnotifications').DataTable({language : languajeDT,
                     processing: true,
                     serverSide: true,
                     ajax: {

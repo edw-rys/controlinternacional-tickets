@@ -108,7 +108,7 @@
             });
 
             // Datatable
-            var table = $('#myticket').DataTable({
+            var table = $('#myticket').DataTable({language : languajeDT,
                 processing: true,
                 serverSide: true,
                 ajax: {

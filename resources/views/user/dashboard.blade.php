@@ -288,12 +288,7 @@
 			});
 
 			//________ Data Table
-			var table = $('#userdashboard').DataTable({
-
-				language: {
-					searchPlaceholder: 'Search...',
-					sSearch: '',
-				},
+			var table = $('#userdashboard').DataTable({language : languajeDT,
 				processing: true,
 				serverSide: true,
 				ajax: {

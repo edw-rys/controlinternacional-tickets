@@ -108,7 +108,7 @@
             });
 
             // DataTable
-            var table = $('#onholdtickets').DataTable({
+            var table = $('#onholdtickets').DataTable({language : languajeDT,
                 processing: true,
                 serverSide: true,
                 ajax: {
