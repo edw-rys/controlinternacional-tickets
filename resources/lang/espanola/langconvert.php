@@ -288,7 +288,7 @@ return[
         'editfaq' => 'Editar FAQ',
         'question' => 'Pregunta',
         'answer' => 'Respuesta',
-        'customerslist' => 'Lista de clientes',
+        'customerslist' => 'Lista de estaciones',
         'verification' => 'Verificación',
         'addcustomer' => 'Agregar cliente',
         'editcustomer' => 'Editar cliente',
