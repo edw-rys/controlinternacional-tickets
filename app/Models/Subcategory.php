@@ -8,7 +8,7 @@ use App\Models\Subcategorychild;
 
 class Subcategory extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
     protected $table = 'subcategorysd';
 
     protected $fillable = [

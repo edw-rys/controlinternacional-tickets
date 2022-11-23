@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CategoryEnvato extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $guarded = ['id']; 
     protected $table = 'envatocategoryassign';

@@ -49,85 +49,81 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->configureRateLimiting();
+        parent::boot();
 
-        $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/api.php'));
 
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
-             Route::middleware(['web'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/custom/admin.php'));
-            Route::middleware(['web'])
-                ->namespace($this->namespace)
-                ->group(base_path('routes/custom/customer.php'));
-        });
+        
     }
 
+   
     /**
-     * Configure the rate limiters for the application.
+     * Define the routes for the application.
      *
      * @return void
      */
-    protected function configureRateLimiting()
+    public function map()
     {
-        RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
-        });
-
-
-        RateLimiter::for('refresh', function(Request $request){
-            if(session()->has('redcaptcha')){
+        // $this->routes(function () {
+           
             
-            }else{
+        // });
+        $this->mapWebRoutes();
+        $this->mapApiRoutes();
+        $this->mapAdminRoutes();
+        $this->mapCustomerRoutes();
+    }
+    /**
+     * Define the "web" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapWebRoutes()
+    {
+        Route::middleware('web')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/web.php'));
+    }
+    /**
+     * Define the "api" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapApiRoutes()
+    {
+        Route::prefix('api')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/api.php'));
 
-                $mysql_link = @mysqli_connect(env('DB_HOST'), env('DB_USERNAME'), env('DB_PASSWORD'), env('DB_DATABASE'), env('DB_PORT'));
-                if (mysqli_connect_errno() || !DB::getSchemaBuilder()->hasTable('settings') ) {
-                    return;
-                }
-                if(setting('DOS_Enable') == 'on'){
-                    $key = 'login.'.$request->ip();
-                    $maxe = Setting::where('key' ,'IPMAXATTEMPT')->first();
-                    $max = $maxe->value; // attempt
-                    // $max = 100; // attempt
-                    
-                    $ipsec = Setting::where('key' ,'IPSECONDS')->first();
-                    $decay = $ipsec->value; // seconds
-                    // $decay = 100; // seconds
-
-                    if(RateLimiter::tooManyAttempts($key,$max)){
-                        $ipexists = IPLIST::where('ip', $request->ip())->exists();
-
-                        if($ipexists){
-                            $ipupdate = IPLIST::where('ip', $request->ip())->first();
-                            $ipdata = GeoIP::getLocation($request->getClientIp());
-
-                            $ipupdate->types = 'Locked';
-                            $ipupdate->update();
-                        }else{
-                            $ipdata = GeoIP::getLocation($request->getClientIp());
-                            IPLIST::create([
-                                'ip' => $ipdata->ip,
-                                'country' => $ipdata->iso_code,
-                                'entrytype' => 'Auto',
-                                'types' => 'Locked'
-
-                            ]);
-                        }
-                    
-                        abort(429); 
-                    } 
-                    else {
-                        RateLimiter::hit($key,$decay);
-                        
-                    }
-                }
-            }
-        });
+    }
+    /**
+     * Define the "admin" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapAdminRoutes()
+    {
+        Route::middleware(['web'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/custom/admin.php'));
+    }
+    /**
+     * Define the "customer" routes for the application.
+     *
+     * These routes all receive session state, CSRF protection, etc.
+     *
+     * @return void
+     */
+    protected function mapCustomerRoutes()
+    {
+        Route::middleware(['web'])
+            ->namespace($this->namespace)
+            ->group(base_path('routes/custom/customer.php'));
     }
 }

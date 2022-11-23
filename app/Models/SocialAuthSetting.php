@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SocialAuthSetting extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable =[
         'facebook_client_id',

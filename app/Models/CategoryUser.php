@@ -9,7 +9,7 @@ use App\Models\Ticket\Ticket;
 
 class CategoryUser extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $table = 'category_category_user';
 

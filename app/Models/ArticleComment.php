@@ -11,7 +11,7 @@ use App\Models\Articles\Article;
 
 class ArticleComment extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable = array(
         

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class customizeerror extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     /**
      * The attributes that are mass assignable.

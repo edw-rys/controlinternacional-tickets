@@ -8,7 +8,7 @@ use App\Models\Groups;
 
 class Groupsusers extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     public  $table = 'groups_users';
 

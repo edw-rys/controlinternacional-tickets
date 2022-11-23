@@ -8,7 +8,7 @@ use App\Models\Ticket\Category;
 
 class Subcategorychild extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $table = 'subcategoryschild';
 

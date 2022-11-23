@@ -8,7 +8,7 @@ use App\Models\User;
 
 class ContactUs extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $table = "contactforms";
     protected  $fillable = [

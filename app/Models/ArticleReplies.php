@@ -10,7 +10,7 @@ use App\Models\ArticleComment;
 
 class ArticleReplies extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable = [
 

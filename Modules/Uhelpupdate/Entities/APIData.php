@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class APIData extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $table = 'envatoapitoken';
 

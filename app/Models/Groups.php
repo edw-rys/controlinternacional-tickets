@@ -8,7 +8,7 @@ use App\Models\Groupsusers;
 
 class Groups extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $table = 'groups';
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class callaction extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable = [
         

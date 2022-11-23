@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserProfile extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
      /**
      * The attributes that are mass assignable.

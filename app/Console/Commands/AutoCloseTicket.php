@@ -8,6 +8,8 @@ use App\Models\Ticket\Ticket;
 use Mail;
 use App\Mail\mailmailablesend;
 use App\Mail\VerifyMail;
+use App\Models\Customer;
+use App\Notifications\TicketCreateNotifications;
 use Auth;
 
 class AutoCloseTicket extends Command
@@ -70,7 +72,7 @@ class AutoCloseTicket extends Command
     
             try{
                 Mail::to($autoclose->cust->email)
-                ->send( new mailmailablesend( 'customer_send_ticket_autoclose', $ticketData ) );
+                    ->send( new mailmailablesend( 'customer_send_ticket_autoclose', $ticketData ) );
             }
             catch(\Exception $e){
                 //

@@ -4,7 +4,8 @@ namespace App\Models\Ticket;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait ;
+use Spatie\MediaLibrary\HasMedia\HasMedia ;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 // use App\Models\Ticket\Ticket;
@@ -22,8 +23,8 @@ use App\Models\Subcategory;
 
 class Ticket extends Model implements HasMedia
 {
-    use HasFactory;
-    use InteractsWithMedia;
+    /*use HasFactory;*/
+    use HasMediaTrait;
 
     protected $table ="tickets";
     protected $fillable = [

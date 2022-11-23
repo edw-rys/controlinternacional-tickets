@@ -149,6 +149,7 @@ return[
         'savechanges' => 'Guardar',
         'id' => 'ID',
         'user' => 'Cliente',
+        'tomanyrequest' => 'DEMASIADAS SOLICITUDES',
         'title' => 'Título',
         'priority' => 'Prioridad',
         'category' => 'Categoría',
@@ -530,7 +531,6 @@ return[
         'articlehelpfull' => '¿era este artículo útil a que?',
         'selectall' => 'Seleccionar todo',
         'count' => 'Contar',
-        'tomanyrequest' => 'DEMASIADAS SOLICITUDES',
         'tomanycontent' => 'Por favor  Espere hasta que se le redirija a otra página. Si no es redirigido, por favor haga clic aquí.',
 
         'dosswitch' => 'Habilitar/Deshabilitar',

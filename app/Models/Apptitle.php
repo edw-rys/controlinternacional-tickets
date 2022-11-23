@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Apptitle extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable = [
         'searchtitle',

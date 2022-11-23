@@ -17,7 +17,7 @@ use Modules\Uhelpupdate\Entities\CategoryEnvato;
 
 class Category extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable = ['name','display','status','project_id','categoryslug','priority','parent_id'];
 

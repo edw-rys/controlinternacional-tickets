@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class FAQ extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $table = 'faq_list';
 

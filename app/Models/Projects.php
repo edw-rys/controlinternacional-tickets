@@ -10,7 +10,7 @@ use App\Models\Projects_category;
 
 class Projects extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $table = 'projects';
 

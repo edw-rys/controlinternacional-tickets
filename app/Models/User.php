@@ -23,7 +23,7 @@ use Spatie\Permission\Models\Permission;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles;
+    use /*HasFactory,*/ Notifiable, HasRoles;
 
     protected $fillable = [
         'firstname',

@@ -8,7 +8,7 @@ use App\Models\User;
 
 class usersettings extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable = [
         'ticket-refresh',

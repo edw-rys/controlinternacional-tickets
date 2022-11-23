@@ -10,7 +10,7 @@ use App\Models\Articles\Article;
 
 class article_likes extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
 protected $table = 'articles_likes';
     protected $fillable = array(

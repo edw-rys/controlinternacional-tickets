@@ -8,7 +8,7 @@ use App\Models\senduserlist;
 
 class Sendmail extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable = [
 

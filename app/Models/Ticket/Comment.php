@@ -4,8 +4,8 @@ namespace App\Models\Ticket;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait ;
+use Spatie\MediaLibrary\HasMedia\HasMedia ;
 
 use App\Models\Ticket\Ticket;
 use App\Models\Customer;
@@ -13,7 +13,7 @@ use App\Models\User;
 
 class Comment extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use /*HasFactory,*/ HasMediaTrait;
 
     protected $fillable = [
         'ticket_id', 'user_id', 'comment', 'image','cust_id','display'

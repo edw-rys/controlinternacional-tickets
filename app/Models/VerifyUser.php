@@ -8,7 +8,7 @@ use App\Models\Customer;
 
 class VerifyUser extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $guarded = [];
  

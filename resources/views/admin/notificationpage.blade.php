@@ -6,7 +6,7 @@
                             <!--Page header-->
                             <div class="page-header d-xl-flex d-block">
                                 <div class="page-leftheader">
-                                    <h4 class="page-title"><span class="font-weight-normal text-muted ms-2">Notifications</span></h4>
+                                    <h4 class="page-title"><span class="font-weight-normal text-muted ms-2">Notificaciones</span></h4>
                                 </div>
                                 
                             </div>

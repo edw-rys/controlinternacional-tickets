@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ticketnote extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable = [
         'ticket_id',

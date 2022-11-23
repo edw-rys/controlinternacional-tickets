@@ -4,8 +4,8 @@ namespace App\Models\Articles;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\HasMedia\HasMediaTrait ;
+use Spatie\MediaLibrary\HasMedia\HasMedia ;
 
 use App\Models\Ticket\Category;
 use App\Models\Role;
@@ -17,8 +17,8 @@ use App\Models\Subcategory;
 
 class Article extends Model implements HasMedia
 {
-    use HasFactory;
-    use InteractsWithMedia;
+    /*use HasFactory;*/
+    use HasMediaTrait;
 
 
 

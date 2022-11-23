@@ -12,7 +12,7 @@ use App\Models\Articles\Article;
 
 class Role extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable = [
         'name',

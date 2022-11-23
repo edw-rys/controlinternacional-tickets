@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class Projects_category extends Pivot
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $table = 'projects_categories';
     protected $fillable = [

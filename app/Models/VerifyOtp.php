@@ -8,7 +8,7 @@ use App\Models\Customer;
 
 class VerifyOtp extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $guarded = [];
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class IPLIST extends Model
 {
-    use HasFactory;
+    /*use HasFactory;*/
 
     protected $fillable = [
 
