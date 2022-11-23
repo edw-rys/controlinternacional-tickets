@@ -102,7 +102,7 @@ return[
         'featurebox' => 'Cuadro de características',
         'callactionbox' => 'Llamado a la acción',
         'testimonial' => 'Testimonio',
-        'customers' => 'Clientela',
+        'customers' => 'Estación de servicios',
         'groups' => 'Grupos',
         'creategroup' => 'Crear grupo',
         'grouplist' => 'Lista grupos',
