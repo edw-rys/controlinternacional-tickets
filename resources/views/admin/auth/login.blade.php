@@ -39,9 +39,9 @@
 		<div class="submit">
 			<input class="btn btn-secondary btn-block"  type="submit" value="{{trans('langconvert.menu.login')}}" onclick="this.disabled=true;this.form.submit();">
 		</div>
-		<div class="text-center mt-3">
+		{{-- <div class="text-center mt-3">
 			<p class="mb-2"><a href="{{route('password.request')}}">{{trans('langconvert.menu.forgotpass')}}</a></p>
-		</div>
+		</div> --}}
 	</form>
 	<!-- End Admin Login -->
 @endsection
