@@ -46,7 +46,7 @@
         </div>
         <div class="text-center mt-4">
             <p class="text-dark mb-0">{{ trans('langconvert.menu.remberpass') }}<a class="text-primary ms-1"
-                    href="{{ route('auth.login') }}">{{ trans('langconvert.menu.login') }}Login</a></p>
+                    href="{{ route('auth.login') }}">{{ trans('langconvert.menu.login') }}</a></p>
         </div>
     </form>
     <!--Reset Password-->
