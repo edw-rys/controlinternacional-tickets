@@ -10,6 +10,7 @@ use App\Models\Apptitle;
 use App\Models\Seosetting;
 use App\Models\User;
 use Hash;
+use Illuminate\Support\Facades\DB;
 
 class ResetPasswordController extends Controller
 {
@@ -79,7 +80,7 @@ class ResetPasswordController extends Controller
       
         DB::table('password_resets')->where(['email'=> $request->email])->delete();
       
-        return redirect()->route('login')->with('success', 'Your password has been changed!');
+        return redirect()->route('login')->with('success', '¡Tu contraseña ha sido cambiada!');
       
 
     }

@@ -12,6 +12,8 @@ Route::middleware([/*'admincountryblock','throttle:refresh', 'ipblockunblock'*/]
         ]);
         Route::get('/change-password', 'ChangepasswordController@index');
         Route::post('/change-password', 'ChangepasswordController@changePassword');
+        Route::get('/{token}/reset-password', 'Auth\ResetpasswordController@showResetForm')->name('admin.reset.password');
+        Route::post('/reset-password',  'Auth\ResetpasswordController@reset');
         
         Route::middleware('auth','admin.auth')->group( function () {
             Route::get('/mark-as-read', 'AdminDashboardController@markNotification')->name('admin.markNotification');

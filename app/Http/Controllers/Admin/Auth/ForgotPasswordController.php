@@ -61,7 +61,7 @@ class ForgotPasswordController extends Controller
         ]);
         
         $verifyData = [
-            'reset_password_url' => route('reset.password',$reset->token),
+            'reset_password_url' => route('admin.reset.password',$reset->token),
         ];
 
         try{
