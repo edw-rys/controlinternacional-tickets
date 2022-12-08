@@ -23,7 +23,7 @@ Route::prefix('uhelpupdate')->group(function() {
     Route::get('/', 'UhelpupdateController@index');
 });
 
-Route::middleware(ProtectAgainstSpam::class)->group(function() {
+// Route::middleware(ProtectAgainstSpam::class)->group(function() {
 
 	Route::middleware(['checkinstallation'])->group(function () {
 
@@ -52,4 +52,4 @@ Route::middleware(ProtectAgainstSpam::class)->group(function() {
             Route::post('licenseinfo/{id}', 'EnvatoAppinfoController@envatogetdetails')->name('admin.envatogetdetails');
         });
     });
-});
+// });
