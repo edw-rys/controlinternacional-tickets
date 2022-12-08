@@ -372,7 +372,7 @@ class AdminTicketController extends Controller
             }
             $comment->each->delete();
             $ticket->delete();
-            return response()->json(['error'=>'Ticket is Deleted Successfully']);
+            return response()->json(['error'=>'El ticket se elimina con éxito']);
         }else{
            
             $media = $ticket->getMedia('ticket');
