@@ -24,7 +24,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
 
         \Spatie\CookieConsent\CookieConsentMiddleware::class,
-        \Spatie\Honeypot\ProtectAgainstSpam::class,
+        // \Spatie\Honeypot\ProtectAgainstSpam::class,
     ];
 
     /**

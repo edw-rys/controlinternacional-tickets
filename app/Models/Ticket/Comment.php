@@ -10,10 +10,11 @@ use Spatie\MediaLibrary\HasMedia\HasMedia ;
 use App\Models\Ticket\Ticket;
 use App\Models\Customer;
 use App\Models\User;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Comment extends Model implements HasMedia
 {
-    use /*HasFactory,*/ HasMediaTrait;
+    use /*HasFactory,*/ HasMediaTrait, SoftDeletes;
 
     protected $fillable = [
         'ticket_id', 'user_id', 'comment', 'image','cust_id','display'

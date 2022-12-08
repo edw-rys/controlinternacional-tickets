@@ -358,10 +358,12 @@ class AdminprofileController extends Controller
         $clients = (new Customer)->where(DB::raw('LOWER(username)'), 'like', '%' . strtolower($request->input('q')) . '%')
             ->get();
 
-        if ($request->one == '1') {
-            $clients->prepend((object) [ 'id'=> 'all', 'username'=> 'Seleccione cliente']); //dd($clients);
-        }else{
-            $clients->prepend((object) [ 'id'=> 'all', 'username'=> 'Todos']); //dd($clients);
+        if($request->no_all != 1){
+            if ($request->one == '1') {
+                $clients->prepend((object) [ 'id'=> 'all', 'username'=> 'Seleccione cliente']); //dd($clients);
+            }else{
+                $clients->prepend((object) [ 'id'=> 'all', 'username'=> 'Todos']); //dd($clients);
+            }
         }
         
         return response()->json($clients);

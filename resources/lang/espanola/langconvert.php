@@ -481,6 +481,10 @@ return[
         'on-hold'=> 'En espera',
         'total' => 'Total',
         'employeereports' => 'Informes de empleado',
+        'priorityreports' => 'Reporte por prioridad',
+        'statusreports' => 'Reporte por estado',
+        'categoryreports' => 'Reporte por Categoría',
+        'customerreports' => 'Reporte por estación',
         'rating' => 'calificación',   
         'replycount' => 'Recuento de respuestas',
         //Reports//
@@ -502,6 +506,7 @@ return[
         'conversions' => 'Conversiones',
         'filesizenotbe' => 'El tamaño del archivo no debe ser superior a',
         'reopen' => 'Volver a abrir',
+        'reopen_chart' => 'Vuelto a abrir',
         'submit' => 'Enviar',
         'reply' => 'Respuesta',
         'addpriority' => 'Agregar prioridad',

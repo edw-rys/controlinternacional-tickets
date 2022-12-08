@@ -215,6 +215,10 @@ Route::middleware([/*'admincountryblock','throttle:refresh', 'ipblockunblock'*/]
             Route::post('subcat','AdminTicketController@sublist')->name('admin.subcat');
             Route::post('refresh/{id}', 'AdminDashboardController@autorefresh');
             Route::get('reports', 'AdminReportController@index');
+            Route::post('reports/priority', 'AdminReportController@exportPriority')->name('admin.reports.priority');
+            Route::post('category/category', 'AdminReportController@exportCategory')->name('admin.reports.category');
+            Route::post('category/status', 'AdminReportController@exportStatus')->name('admin.reports.status');
+            Route::post('category/customer', 'AdminReportController@exportCustomer')->name('admin.reports.customer');
             Route::get('customer/adminlogin/{id}', 'AdminprofileController@adminLogin');
 
             Route::group(['prefix' => 'customnotification'], function(){

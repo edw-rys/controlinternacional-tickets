@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Spatie\Honeypot\ProtectAgainstSpam;
+// use Spatie\Honeypot\ProtectAgainstSpam;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ArticleCommentController;

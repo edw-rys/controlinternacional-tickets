@@ -4,6 +4,7 @@ namespace App\Models\Ticket;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait ;
 use Spatie\MediaLibrary\HasMedia\HasMedia ;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -25,7 +26,7 @@ class Ticket extends Model implements HasMedia
 {
     /*use HasFactory;*/
     use HasMediaTrait;
-
+    use SoftDeletes;
     protected $table ="tickets";
     protected $fillable = [
         'cust_id', 'category_id', 'image', 'ticket_id', 'title', 'priority', 'message', 'status','subject','user_id','project_id','auto_close_ticket',
