@@ -483,6 +483,9 @@ class AdminDashboardController extends Controller
 
     public function listTickets(Request $request, $status){
         $this->authorize('Active Tickets');
+        if($status == 'all'){
+            return $this->index();
+        } 
 
         $groupexists = Groupsusers::where('users_id', Auth::id())->exists();
 
