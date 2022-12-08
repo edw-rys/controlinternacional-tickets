@@ -28,7 +28,7 @@ use App\Http\Controllers\User\Ticket\CommentsController;
 // include('installer.php');
 
 
-Route::middleware(ProtectAgainstSpam::class)->group(function() {
+// Route::middleware(ProtectAgainstSpam::class)->group(function() {
 
 	Route::middleware(['countrylistbub', /*'throttle:refresh',*/ /*'ipblockunblock'*/])->group(function () {
 
@@ -78,7 +78,7 @@ Route::middleware(ProtectAgainstSpam::class)->group(function() {
 	// Route::post('ipblock/update', [App\Http\Controllers\CaptchaipblockController::class, 'update'])->name('ipblock.update');
 	// Route::get('/captchasreload', [App\Http\Controllers\CaptchaipblockController::class, 'captchasreload'])->name('captchas.reload');
 	Route::get('/apifailed', [App\Http\Controllers\ApiController::class, 'index'])->name('apifail.index');
-});
+// });
 Route::get('assig', function(){
 
 	$res = app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Envato Access');
