@@ -53,7 +53,7 @@
         @honeypot
         
 		{{-- Customer --}}
-		{{-- @include('admin.reports.forms.customer') --}}
+		@include('admin.reports.forms.customer')
 		{{-- END Customer --}}
         
 		{{-- Status --}}

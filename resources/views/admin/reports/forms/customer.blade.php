@@ -5,7 +5,7 @@
         </div>
         <div class="card-body">
             {{-- FILTERS --}}
-            <form action="{{ route('admin.reports.customer')}}" class="filter-form">
+            <form action="{{ route('admin.reports.customer')}}" method="POST" class="filter-form">
                 <div class="mb-3">
                     @csrf
                     <div class="row">

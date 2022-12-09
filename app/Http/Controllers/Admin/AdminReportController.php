@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\ReportCustomerExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -17,6 +18,7 @@ use App\Models\usersettings;
 use DB;
 use DataTables;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminReportController extends Controller
 {
@@ -232,7 +234,147 @@ class AdminReportController extends Controller
       ]);
    }
 
+   public function exportCustomer(Request $request){
+      $tickets = $this->buildQuery($request, (new Ticket))
+         ->select([DB::raw('count(cust_id) as count'), 'cust_id'])
+         ->with('cust')
+         ->groupBy('cust_id')
+         ->has('cust')
+         ->get()
+         ;
+      $customers = $tickets->map(function ($e) {
+         $e->cust->total_tickets = $e->count;
+         return $e->cust;
+      });
+      // Categories
+      $ticketsCategories = $this->buildQuery($request, (new Ticket))
+         ->select([DB::raw('count(category_id) as count'), 'category_id', 'cust_id'])
+         ->groupBy(['category_id', 'cust_id'])
+         ->get();
+      // STATUS
+      $ticketsStatuses = $this->buildQuery($request, (new Ticket))
+         ->select([DB::raw('count(status) as count'), 'status', 'cust_id'])
+         ->groupBy(['status', 'cust_id'])
+         ->get();
+
+      $prioritiesStatuses = $this->buildQuery($request, (new Ticket))
+         ->select([DB::raw('count(priority) as count'), 'priority', 'cust_id'])
+         ->groupBy(['priority', 'cust_id'])
+         ->get();
+      // dd($ticketsStatuses->toArray());
+
+      $categories = Category::whereIn('display', ['ticket', 'both'])->where('status', '1')->get();
+      $statuses = $this->getStatuses();
+      $priorities = $this->getPriorities();
+      
+      
+      foreach ($customers as $key => $customer) {
+         // CATEGORIES
+         $customer->categories_list = collect();
+         $customer->total_categories = 0;
+         $items = $ticketsCategories->where('cust_id', $customer->id);
+         foreach ($categories as $key => $category) {
+            $ctgFind = $items->firstWhere('category_id', $category->id);
+            $countCtg = 0;
+            if($ctgFind != null){
+               $countCtg = $ctgFind->count;
+            }
+            $customer->categories_list->push( $countCtg);
+            $customer->total_categories += $countCtg;
+         }
+         // STATUSES
+         $customer->statuses_list = collect();
+         $customer->total_status = 0;
+         $items = $ticketsStatuses->where('cust_id', $customer->id);
+         foreach ($statuses as $key => $statusObj) {
+            $statusesFind = $items->whereIn('status', $statusObj['options']);
+            $countStatus = 0;
+            if(count($statusesFind) > 0 ){
+               foreach ($statusesFind as $key => $statusFn) {
+                  $countStatus = $statusFn->count;
+               }
+            }
+            $customer->statuses_list->push( $countStatus);
+            $customer->total_status += $countStatus;
+         }
+         // PRIORITY
+         $customer->priorities_list = collect();
+         $customer->total_priorities = 0;
+         $items = $prioritiesStatuses->where('cust_id', $customer->id);
+         foreach ($priorities as $key => $priority) {
+            $priorityFind = $items->firstWhere('priority', $priority['priority']);
+            $countPriority = 0;
+            if($priorityFind != null){
+               $countPriority = $priorityFind->count;
+            }
+            $customer->priorities_list->push( $countPriority);
+            $customer->total_priorities += $countPriority;
+         }
+      }
+      // dd($customers->toArray());
+      return Excel::download(new ReportCustomerExport($customers, (object) [
+         'priorities'   => $priorities,
+         'statuses'   => $statuses,
+         'categories'   => $categories
+      ]
+      ), 'Reporte de tickets por estaciones -'.Carbon::now()->format('d-m-Y').'.xlsx');
+
+      dd($tickets);
+   }
    
+   public function getPriorities()
+   {
+      return [
+         [
+            'priority'  => 'Critical',
+            'translate' => 'Crítico',
+            'count'     => 0
+         ],[
+            'priority'  => 'High',
+            'translate' => 'Alto',
+            'count'     => 0
+         ],[
+            'priority'  => 'Medium',
+            'translate' => 'Medio',
+            'count'     => 0
+         ],[
+            'priority'  => 'Low',
+            'translate' => 'Bajo',
+            'count'     => 0
+         ]
+      ];
+   }
+   public function getStatuses()
+   {
+      return [
+         [
+            'status'  => 'active',
+            'translate' => 'Tickets Activos',
+            'options'   => ['New', 'Re-Open', 'Inprogress'],
+            'count'     => 0
+         ],[
+            'status'  => 'onhold',
+            'translate' => 'Tickets en espera',
+            'options'   => ['On-Hold'],
+            'count'     => 0
+         ],[
+            'status'  => 'overdue',
+            'translate' => 'Tickets atrasado',
+            'options'   => ['Overdue'],
+            'count'     => 0
+         ],[
+            'status'  => 'reopen',
+            'translate' => 'Tickets cerrados',
+            'options'   => ['Re-Open'],
+            'count'     => 0
+         ],[
+            'status'  => 'closed',
+            'translate' => 'Tickets cerrados',
+            'options'   => ['Closed'],
+            'count'     => 0
+         ]
+      ];
+   }
 
    public function buildQuery(Request $request, $data)
    {
@@ -276,6 +418,8 @@ class AdminReportController extends Controller
       }
       if ($request->priority_id != null && $request->priority_id != 'all') {
          $data = $data->where('priority', $request->priority_id);
+      }else if($request->priority_id != 'all'){
+         $data = $data->whereNotNull('priority');
       }
 
       if ($request->customers_id != null && $request->customers_id != 'all' && is_array($request->customers_id) && count($request->customers_id) > 0) {
