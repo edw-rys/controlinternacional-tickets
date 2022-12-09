@@ -56,6 +56,10 @@
 		@include('admin.reports.forms.customer')
 		{{-- END Customer --}}
         
+        {{-- HOSE --}}
+		@include('admin.reports.forms.hose')
+		{{-- END HOSE --}}
+
 		{{-- Status --}}
 		{{-- @include('admin.reports.forms.status') --}}
 		{{-- END Status --}}
@@ -64,6 +68,8 @@
 		@include('admin.reports.forms.priority')
 		{{-- END PRIORITY --}}
 
+
+        
 		{{-- Category --}}
 		{{-- @include('admin.reports.forms.category') --}}
 		{{-- END Category --}}
@@ -183,6 +189,28 @@
                 },
                 language: 'es',
             });
+            $("#customer_hose_id").select2({
+                ajax: {
+                    url: "{{ route('customer-list-json') }}?no_all=1",
+                    processResults: function (data) {
+                        console.log($.map(data, function(obj) {
+                                return { id: obj.id, text: obj.username };
+                            }));
+                        return {
+                            results: $.map(data, function(obj) {
+                                return { id: obj.id, text: obj.username };
+                            }),
+                            pagination: {
+                                // En caso de que no necesites paginar
+                                more: false
+                            }
+                        };
+                    }
+                },
+                language: 'es',
+            });
+
+            
         })(jQuery);
     </script>
 @endsection

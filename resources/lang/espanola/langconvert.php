@@ -485,6 +485,7 @@ return[
         'statusreports' => 'Reporte por estado',
         'categoryreports' => 'Reporte por Categoría',
         'customerreports' => 'Reporte por estación',
+        'hosesreports' => 'Reporte por estación-mangueras',
         'rating' => 'calificación',   
         'replycount' => 'Recuento de respuestas',
         //Reports//

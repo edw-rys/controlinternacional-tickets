@@ -219,6 +219,8 @@ Route::middleware([/*'admincountryblock','throttle:refresh', 'ipblockunblock'*/]
             Route::post('category/category', 'AdminReportController@exportCategory')->name('admin.reports.category');
             Route::post('category/status', 'AdminReportController@exportStatus')->name('admin.reports.status');
             Route::post('category/customer', 'AdminReportController@exportCustomer')->name('admin.reports.customer');
+            Route::post('category/hoses', 'AdminReportController@exportHoses')->name('admin.reports.hoses');
+            
             Route::get('customer/adminlogin/{id}', 'AdminprofileController@adminLogin');
 
             Route::group(['prefix' => 'customnotification'], function(){

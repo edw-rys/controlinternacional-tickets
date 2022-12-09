@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exports\ReportCustomerExport;
+use App\Exports\ReportCustomerHoseExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -119,6 +120,14 @@ class AdminReportController extends Controller
       return view('admin.reports.index')->with($data);
    }
 
+   /**
+    * It returns a JSON response with a HTML string that contains a list of priorities and the number
+    * of tickets for each one
+    * 
+    * @param Request request The request object.
+    * 
+    * @return A JSON object with the HTML code for the report.
+    */
    public function exportPriority(Request $request)
    {
 
@@ -160,6 +169,14 @@ class AdminReportController extends Controller
       ]);
    }
 
+   /**
+    * It returns a JSON response with an HTML string that contains a list of ticket categories and the
+    * number of tickets in each category
+    * 
+    * @param Request request The request object.
+    * 
+    * @return A JSON object with the HTML to be displayed in the modal.
+    */
    public function exportCategory(Request $request)
    {
 
@@ -188,6 +205,12 @@ class AdminReportController extends Controller
       ]);
    }
 
+   /**
+    * It returns a JSON response with a HTML string that contains a list of ticket statuses and their
+    * respective counts
+    * 
+    * @param Request request The request object.
+    */
    public function exportStatus(Request $request)
    {
 
@@ -234,6 +257,11 @@ class AdminReportController extends Controller
       ]);
    }
 
+   /**
+    * It exports the data to an excel file.
+    * 
+    * @param Request request The request object.
+    */
    public function exportCustomer(Request $request){
       $tickets = $this->buildQuery($request, (new Ticket))
          ->select([DB::raw('count(cust_id) as count'), 'cust_id'])
@@ -318,8 +346,36 @@ class AdminReportController extends Controller
          'categories'   => $categories
       ]
       ), 'Reporte de tickets por estaciones -'.Carbon::now()->format('d-m-Y').'.xlsx');
+   }
 
-      dd($tickets);
+   public function exportHoses(Request $request)
+   {
+      $tickets = $this->buildQuery($request, (new Ticket))
+         ->select([DB::raw('count(hose_id) as count'), 'hose_id','cust_id'])
+         ->whereNotNull('hose_id')
+         ->groupBy(['hose_id', 'cust_id'])
+         ->with('cust')
+         ->with('hose')
+         ->has('hose')
+         ->has('cust')
+         ->get();
+
+      $customers = collect();
+      foreach ($tickets as $key => $ticket) {
+         $ticket->hose->count_tickets = $ticket->count; 
+         $exist = $customers->firstWhere('id', $ticket->cust_id);
+         if($exist == null){
+            $ticket->cust->list_hoses = collect([$ticket->hose]);
+            $customers->push($ticket->cust);
+            continue;
+         }
+         $hose = $exist->list_hoses->firstWhere('id', $ticket->hose_id);
+         if($hose == null){
+            $exist->list_hoses->push($ticket->hose);
+         }
+      }
+      return Excel::download(new ReportCustomerHoseExport($customers), 'Reporte de tickets por estaciones -'.Carbon::now()->format('d-m-Y').'.xlsx');
+
    }
    
    public function getPriorities()

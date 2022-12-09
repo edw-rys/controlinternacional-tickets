@@ -1,11 +1,11 @@
 <div class="col-xl-12 col-md-12 col-lg-12">
     <div class="card">
         <div class="card-header border-0">
-            <h4 class="card-title">{{ trans('langconvert.admindashboard.customerreports') }}</h4>
+            <h4 class="card-title">{{ trans('langconvert.admindashboard.hosesreports') }}</h4>
         </div>
         <div class="card-body">
             {{-- FILTERS --}}
-            <form action="{{ route('admin.reports.customer')}}" method="POST" class="filter-form">
+            <form action="{{ route('admin.reports.hoses')}}" method="POST" class="filter-form">
                 <div class="mb-3">
                     @csrf
                     <div class="row">
@@ -15,7 +15,7 @@
                                 style="width: 100%"
                                 multiple
                                 class="form-control select2-show-search select2"
-                                data-placeholder="Selecciona estación" name="customers_id[]" id="customers_id">
+                                data-placeholder="Selecciona estación" name="customer_hose_id" id="customer_hose_id">
                                 {{-- <option value="all">Todos</option> --}}
                             </select>
                         </div>
@@ -70,9 +70,6 @@
                                     </div><input class="form-control fc-datepicker pb-0 pt-0" value="" name="created_end" type="date" >
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xl-4 col-md-4 col-12">
-
                         </div>
                     </div>
                     <div class="row mt-2">
