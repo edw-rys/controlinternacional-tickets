@@ -15,7 +15,7 @@
                                 style="width: 100%"
                                 multiple
                                 class="form-control select2-show-search select2"
-                                data-placeholder="Selecciona estación" name="customer_hose_id" id="customer_hose_id">
+                                data-placeholder="Selecciona estación" name="customers_id[]" id="customer_hose_id">
                                 {{-- <option value="all">Todos</option> --}}
                             </select>
                         </div>
