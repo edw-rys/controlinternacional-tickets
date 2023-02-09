@@ -22,15 +22,53 @@ use Image;
 use Illuminate\Support\Str;
 use Mail;
 use App\Mail\mailmailablesend;
+use App\Models\ControlInternacional\StationControlInternacional;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 use Session;
 class AdminprofileController extends Controller
 {
+
+    private $myCompanyId = 1;
+
+    public function checkAndCreateStations()
+    {
+        $list = StationControlInternacional::whereNull('email_customer')
+            ->where('company_id', $this->myCompanyId)
+            ->where('active', 1)
+            ->get();
+
+        if($list->isEmpty()){
+            return false;
+        }
+        foreach ($list as $key => $station) {
+            $customer = Customer::where('company_id', $this->myCompanyId)->where('station_id', $station->id)->first();
+            $email = time().'email.com';
+            if($customer == null){
+                Customer::create([
+                    'firstname' => $station->name,
+                    'lastname'  => $station->name,
+                    'username'  => $station->name,
+                    'email'     => $email,
+                    'status'    => 1,
+                    'password'  => time(),
+                    'verified'  => '1',
+                    'userType'  => 'Customer',
+                    'company_id'=> $this->myCompanyId,
+                    'station_id'=> $station->id,
+                    'station_name'=> $station->name,
+                    'station_code'  => $station->code,
+                    'station_street'    => $station->street,
+                ]);
+                $message = 'y usuario creado para sistema de tickets';
+                $station->email_customer = $email;
+                $station->save();
+            }
+        }
+    }
     public function index()
     {
-
         $user = User::get();
         $data['users'] = $user;
 
@@ -182,7 +220,9 @@ class AdminprofileController extends Controller
 
     public function customers()
     {
+        
         $this->authorize('Customers Access');
+        $this->checkAndCreateStations();
         $user = Customer::get();
         $data['users'] = $user;
 
@@ -300,6 +340,7 @@ class AdminprofileController extends Controller
     }
 
     public function customersstore(Request $request){
+        return false;
         $this->authorize('Customers Create');
         $request->validate([
             'firstname' => 'required|string|max:255',
@@ -400,9 +441,10 @@ class AdminprofileController extends Controller
     {
         $this->authorize('Customers Edit');
         $request->validate([
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
+            // 'firstname' => 'required|string|max:255',
+            // 'lastname' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
+            'password' => 'nullable|string|min:6',
         ]);
 
         if($request->phone){
@@ -411,14 +453,25 @@ class AdminprofileController extends Controller
             ]);
         }
         $user = Customer::where('id', $id)->findOrFail($id);
-        $user->firstname = $request->input('firstname');
-        $user->lastname = $request->input('lastname');
-        $user->username = $request->input('firstname').' '.$request->input('lastname');
+        // $user->firstname = $request->input('firstname');
+        // $user->lastname = $request->input('lastname');
+        // $user->username = $request->input('firstname').' '.$request->input('lastname');
         $user->email = $request->input('email');
-        $user->country = $request->input('country');
-        $user->timezone = $request->input('timezone');
+        // $user->country = $request->input('country');
+        // $user->timezone = $request->input('timezone');
+        $user->password = bcrypt($request->input('password'));
         $user->status = $request->input('status');
         $user->update();
+
+        $station = StationControlInternacional::where('id', $user->station_id)
+            ->where('company_id', $this->myCompanyId)
+            ->first();
+        if($station!= null){
+            $station->email_customer = $user->email;
+            $station->save();
+        }
+
+
         $request->session()->forget('email',$user->email);
 
         return redirect('/admin/customer')->with('success', trans('langconvert.functions.customerupdate'));

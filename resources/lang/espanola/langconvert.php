@@ -101,6 +101,7 @@ return[
         'callactionbox' => 'Llamado a la acción',
         'testimonial' => 'Testimonio',
         'customers' => 'Estación de servicios',
+        'customer' => 'Estación de servicio',
         'groups' => 'Grupos',
         'creategroup' => 'Crear grupo',
         'grouplist' => 'Lista grupos',

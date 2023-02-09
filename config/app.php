@@ -127,6 +127,9 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+
+    'files_upload_sys' => env('ROUTE_FILE_SYSTEM'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
